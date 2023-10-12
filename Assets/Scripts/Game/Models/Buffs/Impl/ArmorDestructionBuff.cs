@@ -7,9 +7,12 @@ namespace Game.Models.Buffs.Impl
     public class ArmorDestructionBuff : BuffBase
     {
         private readonly AttributeModifier _attributeModifier = new(EAttributeType.Armor, EModifierType.Substract, -10);
+        protected readonly int _lifeTime;
 
+        
+        
         public override EBuffType BuffType => EBuffType.ArmorDestruction;
-        public override int LifeTime => 3;
+        public override int LifeTime => _lifeTime;
         
         protected override void OnApply(List<AttributeModifier> attributeModifiers)
         {
@@ -20,5 +23,7 @@ namespace Game.Models.Buffs.Impl
         {
             Target.RemoveAttackModifier(_attributeModifier);
         }
+
+      
     }
 }

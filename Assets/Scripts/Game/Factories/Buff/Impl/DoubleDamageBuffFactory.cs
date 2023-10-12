@@ -8,8 +8,8 @@ namespace Game.Factories.Buff.Impl
         IBuffFactory
     {
         public EBuffType BuffType => EBuffType.DoubleDamage;
-        
-        public new BuffBase Create()
+
+        public BuffBase Create()
         {
             return base.Create();
         }

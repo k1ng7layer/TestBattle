@@ -11,15 +11,17 @@ namespace Game.Systems
     {
         private readonly IGameFieldProvider _gameFieldProvider;
         private readonly UnitFactory _unitFactory;
-        private readonly BattleManager _battleManager;
+        private readonly ICombatManager _combatManager;
 
         public InitializeGameSystem(
             IGameFieldProvider gameFieldProvider, 
+            ICombatManager combatManager,
             UnitFactory unitFactory
         )
         {
             _gameFieldProvider = gameFieldProvider;
             _unitFactory = unitFactory;
+            _combatManager = combatManager;
         }
         
         public void Initialize()
@@ -35,7 +37,7 @@ namespace Game.Systems
                 battleUnits.Add(unit);
             }
             
-            _battleManager.StartBattle(battleUnits);
+            _combatManager.StartCombat(battleUnits);
         }
     }
 }

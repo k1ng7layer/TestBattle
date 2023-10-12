@@ -49,7 +49,7 @@ namespace Game.Presenters.Unit.Impl
             return _buffs.Remove(buff.BuffType);
         }
         
-        public void HandleAttack(float attackDamage, List<AttributeModifier> attributeModifiers)
+        public void HandleAttack(float attackDamage, IEnumerable<AttributeModifier> attributeModifiers)
         {
             var armorAffection = attackDamage - attackDamage / 100f * Armor.Value;
             Health.Value -= armorAffection;

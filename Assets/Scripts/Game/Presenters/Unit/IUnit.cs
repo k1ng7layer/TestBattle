@@ -15,7 +15,7 @@ namespace Game.Presenters.Unit
         IEnumerable<AttributeModifier> AttackModifiers { get; }
         void AddBuff(BuffBase buffBase);
         bool TryRemoveBuff(BuffBase buffBase);
-        void HandleAttack(float attackDamage, List<AttributeModifier> attributeModifiers);
+        void HandleAttack(float attackDamage, IEnumerable<AttributeModifier> attributeModifiers);
         void AddAttackModifier(AttributeModifier attributeModifier);
         bool RemoveAttackModifier(AttributeModifier attributeModifier);
     }
