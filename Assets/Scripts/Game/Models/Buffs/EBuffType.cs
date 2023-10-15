@@ -5,5 +5,7 @@
         DoubleDamage,
         ArmorSelf,
         ArmorDestruction,
+        VampirismSelf,
+        VampirismDecrease
     }
 }

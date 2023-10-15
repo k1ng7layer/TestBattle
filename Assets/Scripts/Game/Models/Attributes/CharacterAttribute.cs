@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Game.Models.Modifiers;
 using UnityEngine;
 
@@ -11,14 +12,16 @@ namespace Game.Models.Attributes
         private float _additionalValue;
         private bool _isDirty;
         
-        public CharacterAttribute(float minValue, float maxValue)
+        public CharacterAttribute(float value, float minValue, float maxValue)
         {
             MinValue = minValue;
             MaxValue = maxValue;
+            _baseValue = value;
         }
         
         public float MaxValue { get; }
         public float MinValue { get; }
+        public event Action<float> Changed; 
 
         public float Value
         {
@@ -26,7 +29,7 @@ namespace Game.Models.Attributes
             {
                 if (_isDirty)
                 {
-                    _additionalValue = CalculateAdditionalValue();
+                    _additionalValue = CalculateValue();
                     _isDirty = false;
                 }
 
@@ -47,6 +50,8 @@ namespace Game.Models.Attributes
                     _baseValue = value;
                     _baseValue = Mathf.Clamp(_baseValue, MinValue, MaxValue);
                 }
+                
+                Changed?.Invoke(Value);
             }
         }
 
@@ -54,6 +59,8 @@ namespace Game.Models.Attributes
         {
             _isDirty = true;
             _modifiers.Add(modifier);
+            
+            Changed?.Invoke(Value);
         }
 
         public bool TryRemoveModifier(AttributeModifier modifier)
@@ -68,13 +75,35 @@ namespace Game.Models.Attributes
         }
         
 
-        private float CalculateAdditionalValue()
+        private float CalculateValue()
         {
-            var value = _baseValue;
+            var value = _additionalValue;
             
             foreach (var modifier in _modifiers)
             {
-                value += modifier.Value;
+                switch (modifier.ModifierType)
+                {
+                    case EModifierType.Divide:
+                        value += _baseValue;
+                        value /= modifier.Value;
+                        break;
+                    case EModifierType.Multiply:
+                        value += _baseValue;
+                        value *= modifier.Value;
+                        value -= _baseValue;
+                        break;
+                    case EModifierType.Add:
+                        value += modifier.Value;
+                        break;
+                    case EModifierType.AddPercents:
+                        value += _baseValue;
+                        value *= 1 + modifier.Value;
+                        value -= _baseValue;
+                        break;
+                    case EModifierType.Substract:
+                        value -= modifier.Value;
+                        break;
+                }
             }
 
             return value;

@@ -6,7 +6,8 @@ using UnityEngine;
 namespace Game.Settings.Buffs.Impl
 {
     [CreateAssetMenu(menuName = "Settings/Buffs/" + nameof(BuffsSettingsBase), fileName = nameof(BuffsSettingsBase))]
-    public class BuffsSettingsBase : ScriptableObject, IBuffsSettingsBase
+    public class BuffsSettingsBase : ScriptableObject, 
+        IBuffsSettingsBase
     {
         [SerializeField] private List<BuffSettings> buffSettingsList;
         

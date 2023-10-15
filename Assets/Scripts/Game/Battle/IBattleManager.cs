@@ -1,11 +1,13 @@
-﻿using System.Collections.Generic;
-using Game.Presenters.Unit;
+﻿using System;
+using System.Collections.Generic;
+using Game.Models.Combat;
 
 namespace Game.Battle
 {
     public interface ICombatManager
     {
-        void StartCombat(IEnumerable<IUnit> units);
+        event Action<BattleMember, BattleMember> BattleStarted;
+        void StartCombat(List<BattleMember> battleMembers);
         void Attack();
         void ApplyBuff();
     }

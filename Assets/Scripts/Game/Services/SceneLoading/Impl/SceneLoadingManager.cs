@@ -10,10 +10,22 @@ namespace Game.Services.SceneLoading.Impl
     {
         public void RestartGame()
         {
-            var loadingOperation = SceneManager.LoadSceneAsync(ELevelName.Game.ToString(), LoadSceneMode.Single);
+            // var unloadingOperation = SceneManager.UnloadSceneAsync(ELevelName.Game.ToString());
+            // Observable.FromCoroutine(() => UnLoadScene(unloadingOperation))
+            //     .Subscribe(_ =>
+            //     {
+            //         // var loadingOperation =
+            //         //     SceneManager.LoadSceneAsync(ELevelName.Game.ToString(), LoadSceneMode.Single);
+            //         //
+            //         // var disposable = Observable.FromCoroutine(() => LoadScene(loadingOperation));
+            //         //.Subscribe(_ => RunContext("GameContext"));
+            //     });
+            
+            var loadingOperation =
+                SceneManager.LoadSceneAsync(ELevelName.Game.ToString(), LoadSceneMode.Single);
 
-            Observable.FromCoroutine(()=> LoadScene(loadingOperation))
-                .Subscribe(_ => RunContext("GameContext"));
+            var disposable = Observable.FromCoroutine(() => LoadScene(loadingOperation));
+
         }
 
         private IEnumerator LoadScene(AsyncOperation loadingOperation)
@@ -25,6 +37,17 @@ namespace Game.Services.SceneLoading.Impl
                 yield return null;
             }
         }
+        
+        private IEnumerator UnLoadScene(AsyncOperation loadingOperation)
+        {
+            //loadingOperation.allowSceneActivation = true;
+            
+            while (!loadingOperation.isDone)
+            {
+                yield return null;
+            }
+        }
+        
 
         private void RunContext(string name)
         {

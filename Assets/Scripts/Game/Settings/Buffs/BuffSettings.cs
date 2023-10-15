@@ -9,11 +9,13 @@ namespace Game.Settings.Buffs
     public class BuffSettings : ScriptableObject
     {
         [SerializeField] private EBuffType buffType;
-        [SerializeField] private List<AttributeModifierSettings> attributeModifiers;
         [SerializeField] private int lifeTime;
+        [SerializeField] private List<AttributeModifierSettings> staticAttributeModifiers;
+        [SerializeField] private List<AttributeModifierSettings> attackAttributeModifiers;
 
         public EBuffType BuffType => buffType;
-        public IEnumerable<AttributeModifierSettings> AttributeModifiers => attributeModifiers;
         public int LifeTime => lifeTime;
+        public IEnumerable<AttributeModifierSettings> StaticAttributeModifiers => staticAttributeModifiers;
+        public IEnumerable<AttributeModifierSettings> AttackAttributeModifiers => attackAttributeModifiers;
     }
 }

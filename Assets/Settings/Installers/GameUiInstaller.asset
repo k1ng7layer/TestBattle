@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f1819e1b444a4a61ae9a85077bf5f102, type: 3}
+  m_Name: GameUiInstaller
+  m_EditorClassIdentifier: 
+  canvas: {fileID: 5973675932785846684, guid: 34b304f50e29a634abd668f730d1031c, type: 3}
+  unitStatsView: {fileID: 2584339455395950270, guid: f995fe39b89e5854aafc98147c76ead3, type: 3}
+  statsMainView: {fileID: 2750896785577958813, guid: 14a2f99d70238c146a0cd7beb2f980e6, type: 3}
+  combatMainView: {fileID: 3366203836566695284, guid: 7b38ce3b3b7349946b12e317b2543b85, type: 3}
+  restartGameButton: {fileID: 1866991040619709710, guid: dedbbbd7612327d4ca3faa1ad6d9259c, type: 3}
+  applyBuffMainView: {fileID: 39014846404312382, guid: 138b8f61cd237a1418b69c3e5b4e772c, type: 3}
+  roundCounterView: {fileID: 1848313709330470948, guid: a4e74e79f8bbe3b4b9a5ccb559a03d16, type: 3}
+  gameUiMainView: {fileID: 1778133553397698924, guid: 8170fccb0b34be944b1d22016ec14a52, type: 3}
