@@ -11,10 +11,6 @@ namespace Game.Presenters.Unit.Impl
     public class Unit : IUnit
     {
         private readonly IUnitView _unitView;
-        private readonly UnitParameters _unitParameters;
-        private readonly CharacterAttribute _health;
-        private readonly CharacterAttribute _armor;
-        private readonly CharacterAttribute _vampirism;
         private readonly Dictionary<string, Buff> _buffs = new();
         private readonly List<AttributeModifier> _attackModifiers = new();
         private readonly Dictionary<EAttributeType, CharacterAttribute> _characterAttributes = new();
@@ -22,44 +18,43 @@ namespace Game.Presenters.Unit.Impl
         public Unit(IUnitView unitView, UnitParameters unitParameters)
         {
             _unitView = unitView;
-            _unitParameters = unitParameters;
 
-            Init();
+            Init(unitParameters);
         }
 
-        public event Action<Buff> BuffExpired;
         public IReadOnlyDictionary<EAttributeType, CharacterAttribute> Attributes => _characterAttributes;
         public IReadOnlyDictionary<string, Buff> StaticBuffs => _buffs;
         public IEnumerable<AttributeModifier> AttackModifiers => _attackModifiers;
         
+        public event Action<Buff> BuffExpired;
         public event Action Dead;
         public event Action<Buff> Buffed;
         
-        private void Init()
+        private void Init(UnitParameters parameters)
         {
             _characterAttributes.Add(EAttributeType.Armor, 
                 new CharacterAttribute(
-                    _unitParameters.StartArmor, 
+                    parameters.StartArmor, 
                     0, 
-                    _unitParameters.MaxArmor));
+                    parameters.MaxArmor));
             
             _characterAttributes.Add(EAttributeType.Health, 
                 new CharacterAttribute(
-                    _unitParameters.StartHealth, 
+                    parameters.StartHealth, 
                     0, 
-                    _unitParameters.MaxHealth));
+                    parameters.MaxHealth));
             
             _characterAttributes.Add(EAttributeType.Vampirism, 
                 new CharacterAttribute(
-                    _unitParameters.StartVampirism, 
+                    parameters.StartVampirism, 
                     0, 
-                    _unitParameters.MaxVampyrism));
+                    parameters.MaxVampyrism));
             
             _characterAttributes.Add(EAttributeType.AttackDamage, 
                 new CharacterAttribute(
-                    _unitParameters.StartAttackDamage, 
+                    parameters.StartAttackDamage, 
                     0, 
-                    _unitParameters.MaxAttackDamage));
+                    parameters.MaxAttackDamage));
         }
 
         public void AddBuff(Buff buff)
@@ -75,47 +70,18 @@ namespace Game.Presenters.Unit.Impl
             
             Buffed?.Invoke(buff);
         }
-
-        private bool TryRemoveBuff(Buff buff)
-        {
-            var result =  _buffs.Remove(buff.BuffName);
-
-            if (result)
-            {
-                BuffExpired?.Invoke(buff);
-            }
-
-            return result;
-        }
         
-        public void TakeDamage(float attackDamage, IEnumerable<AttributeModifier> attributeModifiers)
+        public void TakeDamage(float damage, IEnumerable<AttributeModifier> attributeModifiers)
         {
             var health = _characterAttributes[EAttributeType.Health];
-            var armor = _characterAttributes[EAttributeType.Armor];
-            var vampirism = _characterAttributes[EAttributeType.Vampirism];
-            var attackAttribute = _characterAttributes[EAttributeType.AttackDamage];
             
             foreach (var attributeModifier in attributeModifiers)
             {
-                switch (attributeModifier.AttributeType)
-                {
-                    case EAttributeType.Health:
-                        health.Value -= attributeModifier.Value;
-                        break;
-                    case EAttributeType.Armor:
-                        armor.Value -= attributeModifier.Value;
-                        break;
-                    case EAttributeType.Vampirism:
-                        vampirism.Value -= attributeModifier.Value;
-                        break;
-                    case EAttributeType.AttackDamage:
-                        attackAttribute.Value -= attributeModifier.Value;
-                        break;
-                }
+                var characterAttribute = _characterAttributes[attributeModifier.AttributeType];
+                characterAttribute.Value -= attributeModifier.Value;
             }
             
-            var armorAffection = attackDamage - attackDamage / 100f * armor.Value;
-            health.Value -= armorAffection;
+            health.Value -= damage;
             
             _unitView.OnTakeDamage();
             
@@ -160,6 +126,18 @@ namespace Game.Presenters.Unit.Impl
             {
                 TryRemoveBuff(buff);
             }
+        }
+        
+        private bool TryRemoveBuff(Buff buff)
+        {
+            var result =  _buffs.Remove(buff.BuffName);
+
+            if (result)
+            {
+                BuffExpired?.Invoke(buff);
+            }
+
+            return result;
         }
     }
 }

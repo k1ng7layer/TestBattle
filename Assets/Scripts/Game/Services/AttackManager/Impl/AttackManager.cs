@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Game.Models.Attributes;
-using Game.Models.Modifiers;
+﻿using Game.Models.Attributes;
 using Game.Presenters.Unit;
 using Game.Services.Buffs;
 using Game.Settings.Battle;
@@ -21,20 +18,15 @@ namespace Game.Services.AttackManager.Impl
             _buffProvider = buffProvider;
             _battleSettingsBase = battleSettingsBase;
         }
-
-        public event Action AttackPerformed;
-
+        
         public void DoAttack(IUnit attacker, IUnit target)
         {
             var damage = attacker.Attributes[EAttributeType.AttackDamage];
             
+            var totalDamage = CalculateDamage(target, damage.Value);
             attacker.PerformAttack();
-            
-            target.TakeDamage(damage.Value, attacker.AttackModifiers);
-            
-            //CalculateDamage(target, damage.Value, attacker.AttackModifiers);
-            
-            AttackPerformed?.Invoke();
+
+            target.TakeDamage(totalDamage, attacker.AttackModifiers);
         }
 
         public void ApplyBuff(IUnit attacker)
@@ -48,34 +40,12 @@ namespace Game.Services.AttackManager.Impl
             }
         }
 
-        private void CalculateDamage(IUnit target, float damage, IEnumerable<AttributeModifier> attributeModifiers)
+        private float CalculateDamage(IUnit target, float damage)
         {
-            var health = target.Attributes[EAttributeType.Health];
             var armor = target.Attributes[EAttributeType.Armor];
-            var vampirism = target.Attributes[EAttributeType.Vampirism];
-            var attackAttribute = target.Attributes[EAttributeType.AttackDamage];
-            
-            foreach (var attributeModifier in attributeModifiers)
-            {
-                switch (attributeModifier.AttributeType)
-                {
-                    case EAttributeType.Health:
-                        health.Value -= attributeModifier.Value;
-                        break;
-                    case EAttributeType.Armor:
-                        armor.Value -= attributeModifier.Value;
-                        break;
-                    case EAttributeType.Vampirism:
-                        vampirism.Value -= attributeModifier.Value;
-                        break;
-                    case EAttributeType.AttackDamage:
-                        attackAttribute.Value -= attributeModifier.Value;
-                        break;
-                }
-            }
-            
-            var armorAffection = damage - damage / 100f * armor.Value;
-            health.Value -= armorAffection;
+            var armorAffected = damage - damage / 100f * armor.Value;
+
+            return armorAffected;
         }
     }
 }

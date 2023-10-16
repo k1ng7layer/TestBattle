@@ -15,7 +15,7 @@ namespace Game.Presenters.Unit
         IReadOnlyDictionary<string, Buff> StaticBuffs { get; }
         IEnumerable<AttributeModifier> AttackModifiers { get; }
         void AddBuff(Buff buff);
-        void TakeDamage(float attackDamage, IEnumerable<AttributeModifier> attributeModifiers);
+        void TakeDamage(float damage, IEnumerable<AttributeModifier> attributeModifiers);
         void PerformAttack();
         void AddAttackModifier(AttributeModifier attributeModifier);
         bool RemoveAttackModifier(AttributeModifier attributeModifier);
