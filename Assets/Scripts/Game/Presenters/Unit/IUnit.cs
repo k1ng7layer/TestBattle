@@ -12,7 +12,7 @@ namespace Game.Presenters.Unit
         event Action<Buff> Buffed;
         event Action<Buff> BuffExpired;
         IReadOnlyDictionary<EAttributeType, CharacterAttribute> Attributes { get; }
-        IReadOnlyDictionary<EBuffType, Buff> StaticBuffs { get; }
+        IReadOnlyDictionary<string, Buff> StaticBuffs { get; }
         IEnumerable<AttributeModifier> AttackModifiers { get; }
         void AddBuff(Buff buff);
         bool TryRemoveBuff(Buff buff);

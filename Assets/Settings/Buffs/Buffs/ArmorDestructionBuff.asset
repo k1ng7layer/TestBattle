@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cf135c9c46a54c038a952b92db537701, type: 3}
   m_Name: ArmorDestructionBuff
   m_EditorClassIdentifier: 
-  buffType: 2
+  buffName: Armor destruction
   lifeTime: 1
   staticAttributeModifiers: []
   attackAttributeModifiers:

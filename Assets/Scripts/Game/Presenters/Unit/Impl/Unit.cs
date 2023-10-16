@@ -14,7 +14,7 @@ namespace Game.Presenters.Unit.Impl
         private readonly CharacterAttribute _health;
         private readonly CharacterAttribute _armor;
         private readonly CharacterAttribute _vampirism;
-        private readonly Dictionary<EBuffType, Buff> _buffs = new();
+        private readonly Dictionary<string, Buff> _buffs = new();
         private readonly List<AttributeModifier> _attackModifiers = new();
         private readonly Dictionary<EAttributeType, CharacterAttribute> _characterAttributes = new();
 
@@ -29,7 +29,7 @@ namespace Game.Presenters.Unit.Impl
 
         public event Action<Buff> BuffExpired;
         public IReadOnlyDictionary<EAttributeType, CharacterAttribute> Attributes => _characterAttributes;
-        public IReadOnlyDictionary<EBuffType, Buff> StaticBuffs => _buffs;
+        public IReadOnlyDictionary<string, Buff> StaticBuffs => _buffs;
         public IEnumerable<AttributeModifier> AttackModifiers => _attackModifiers;
         
         public event Action Dead;
@@ -37,13 +37,13 @@ namespace Game.Presenters.Unit.Impl
 
         public void AddBuff(Buff buff)
         {
-            var hasBuff = _buffs.ContainsKey(buff.BuffType);
+            var hasBuff = _buffs.ContainsKey(buff.BuffName);
             
             if(hasBuff)
                 return;
             
-            _buffs.Add(buff.BuffType, buff);
-            Debug.Log($"Added buff {buff.BuffType}");
+            _buffs.Add(buff.BuffName, buff);
+            Debug.Log($"Added buff {buff.BuffName}");
             
             buff.Apply(this);
             
@@ -52,7 +52,7 @@ namespace Game.Presenters.Unit.Impl
 
         public bool TryRemoveBuff(Buff buff)
         {
-            var result =  _buffs.Remove(buff.BuffType);
+            var result =  _buffs.Remove(buff.BuffName);
 
             if (result)
             {

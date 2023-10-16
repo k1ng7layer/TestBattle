@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cf135c9c46a54c038a952b92db537701, type: 3}
   m_Name: VampirismSelfBuff
   m_EditorClassIdentifier: 
-  buffType: 1
+  buffName: Vampirism self
   lifeTime: 2
   staticAttributeModifiers:
   - {fileID: 11400000, guid: 5e585adf2ae65054c9af24675cae15a3, type: 2}

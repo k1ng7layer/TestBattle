@@ -20,7 +20,7 @@ namespace Game.Services.Buffs.Impl
             _buffsSettingsBase = buffsSettingsBase;
         }
         
-        private EBuffType GetRandomBuff(IList<EBuffType> availableBuffs)
+        private string GetRandomBuffName(IList<string> availableBuffs)
         {
             var random = new Random();
             var randomBuffTypeIndex = random.Next(0, availableBuffs.Count);
@@ -29,27 +29,27 @@ namespace Game.Services.Buffs.Impl
             return randomBuff;
         }
 
-        private List<EBuffType> GetAvailableBuffs(IReadOnlyDictionary<EBuffType, Buff> excludeBuffs)
+        private List<string> GetAvailableBuffNames(IReadOnlyDictionary<string, Buff> excludeBuffs)
         {
-            var buffTypes = (EBuffType[])Enum.GetValues(typeof(EBuffType));
+            var buffTypes = _buffsSettingsBase.BuffSettingsList;
             
-            var availableBuffs = new List<EBuffType>();
+            var availableBuffs = new List<string>();
            
-            foreach (var buffType in buffTypes)
+            foreach (var buffSettings in buffTypes)
             {
-                if(!excludeBuffs.ContainsKey(buffType))
-                    availableBuffs.Add(buffType);
+                if(!excludeBuffs.ContainsKey(buffSettings.BuffName))
+                    availableBuffs.Add(buffSettings.BuffName);
             }
 
             return availableBuffs;
         }
 
         public Buff TryGetBuff(
-            IReadOnlyDictionary<EBuffType, Buff> excludeBuffs)
+            IReadOnlyDictionary<string, Buff> excludeBuffs)
         {
-            var availableBuffs = GetAvailableBuffs(excludeBuffs);
+            var availableBuffs = GetAvailableBuffNames(excludeBuffs);
             
-            var randomBuff = GetRandomBuff(availableBuffs);
+            var randomBuff = GetRandomBuffName(availableBuffs);
 
             var buff = _buffFactory.Create(_buffsSettingsBase, randomBuff);
             

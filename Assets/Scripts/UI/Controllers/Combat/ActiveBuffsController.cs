@@ -12,7 +12,7 @@ namespace UI.Controllers.Combat
     { 
         [Inject] private readonly IRoundProvider _roundProvider;
         
-        private readonly Dictionary<EBuffType, ActiveBuffViewElement> _activeBuffsViewElements = new();
+        private readonly Dictionary<string, ActiveBuffViewElement> _activeBuffsViewElements = new();
 
         public ActiveBuffsController(
             ActiveBuffsView view, 
@@ -32,16 +32,16 @@ namespace UI.Controllers.Combat
         private void OnBuffed(Buff buff)
         {
             var buffView = View.ActiveBuffCollection.Create();
-            _activeBuffsViewElements.Add(buff.BuffType, buffView);
+            _activeBuffsViewElements.Add(buff.BuffName, buffView);
             
-            buffView.SetBuffName(buff.BuffType.ToString(), buff.BuffType);
+            buffView.SetBuffName(buff.BuffName);
             buffView.SetBuffTick(buff.TickLeft);
         }   
 
         private void OnBuffExpired(Buff buff)
         {
-            var buffView = _activeBuffsViewElements[buff.BuffType];
-            _activeBuffsViewElements.Remove(buff.BuffType);
+            var buffView = _activeBuffsViewElements[buff.BuffName];
+            _activeBuffsViewElements.Remove(buff.BuffName);
             
             View.ActiveBuffCollection.Remove(buffView);
         }

@@ -5,6 +5,6 @@ namespace Game.Services.Buffs
 {
     public interface IBuffProvider
     {
-        Buff TryGetBuff(IReadOnlyDictionary<EBuffType, Buff> excludeBuffs);
+        Buff TryGetBuff(IReadOnlyDictionary<string, Buff> excludeBuffs);
     }
 }

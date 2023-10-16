@@ -4,7 +4,7 @@ using Zenject;
 
 namespace Game.Factories.Buffs.Impl
 {
-    public class BuffFactory : PlaceholderFactory<IBuffsSettingsBase, EBuffType, Buff>, 
+    public class BuffFactory : PlaceholderFactory<IBuffsSettingsBase, string, Buff>, 
         IBuffFactory
     {
        

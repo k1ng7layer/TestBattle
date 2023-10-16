@@ -1,9 +1,11 @@
-﻿using Game.Models.Buffs;
+﻿using System.Collections.Generic;
+using Game.Settings.Buffs.Impl;
 
 namespace Game.Settings.Buffs
 {
     public interface IBuffsSettingsBase
     {
-        BuffSettings Get(EBuffType buffType);
+        IReadOnlyList<BuffSettings> BuffSettingsList { get; }
+        BuffSettings Get(string buffName);
     }
 }

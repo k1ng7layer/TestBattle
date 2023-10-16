@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Game.Models.Modifiers;
 using Game.Presenters.Unit;
 using Game.Settings.Buffs;
@@ -15,10 +16,10 @@ namespace Game.Models.Buffs
 
         public int TickLeft => _lifeTime;
 
-        public Buff(IBuffsSettingsBase buffsSettingsBase, EBuffType buffType)
+        public Buff(IBuffsSettingsBase buffsSettingsBase, string buffName)
         {
-            BuffType = buffType;
-            var settings = buffsSettingsBase.Get(buffType);
+            BuffName = buffName;
+            var settings = buffsSettingsBase.Get(buffName);
             _lifeTime = settings.LifeTime;
             
             foreach (var staticAttribute in settings.StaticAttributeModifiers)
@@ -38,7 +39,7 @@ namespace Game.Models.Buffs
             }
         }
         
-        public EBuffType BuffType { get; }
+        public String BuffName { get; }
 
         public void Apply(IUnit target)
         {

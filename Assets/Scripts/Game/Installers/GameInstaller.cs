@@ -54,7 +54,7 @@ namespace Game.Installers
         private void BindFactories()
         {
             Container
-                .BindFactoryCustomInterface<IBuffsSettingsBase, EBuffType, Buff, BuffFactory, IBuffFactory>()
+                .BindFactoryCustomInterface<IBuffsSettingsBase, string, Buff, BuffFactory, IBuffFactory>()
                 .AsSingle();
             
             Container

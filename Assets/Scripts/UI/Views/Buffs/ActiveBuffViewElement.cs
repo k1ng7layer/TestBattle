@@ -1,5 +1,4 @@
-﻿using Game.Models.Buffs;
-using SimpleUi.Abstracts;
+﻿using SimpleUi.Abstracts;
 using TMPro;
 using UnityEngine;
 
@@ -10,13 +9,13 @@ namespace UI.Views.Buffs
         [SerializeField] private TextMeshProUGUI buffNameText;
         [SerializeField] private TextMeshProUGUI buffLifeTimeText;
         
-        public EBuffType BuffType { get; private set; }
+        public string BuffName { get; private set; }
         
-        public void SetBuffName(string buffName, EBuffType buffType)
+        public void SetBuffName(string buffName)
         {
             buffNameText.text = buffName;
             
-            BuffType = buffType;
+            BuffName = buffName;
         }
 
         public void SetBuffTick(int tick)

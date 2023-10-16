@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cf135c9c46a54c038a952b92db537701, type: 3}
   m_Name: DoubleDamageBuff
   m_EditorClassIdentifier: 
-  buffType: 0
+  buffName: Double damage
   lifeTime: 1
   staticAttributeModifiers:
   - {fileID: 11400000, guid: 63865027ed355944886cf40fd3361bff, type: 2}
