@@ -2,11 +2,11 @@
 
 namespace Game.StateMachine.States.Impl.Battle
 {
-    public class BattleStartNewRoundStateBase : StateBase
+    public class BattleStartNewRoundState : StateBase
     {
         private readonly BattleStateMachine _battleStateMachine;
 
-        public BattleStartNewRoundStateBase(BattleStateMachine battleStateMachine) : base(battleStateMachine)
+        public BattleStartNewRoundState(BattleStateMachine battleStateMachine) : base(battleStateMachine)
         {
             _battleStateMachine = battleStateMachine;
         }

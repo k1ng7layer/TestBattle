@@ -4,7 +4,7 @@ using Zenject;
 
 namespace Game.Factories.States.Battle
 {
-    public interface IBattleWaitForUnitsAttackStateFactory : IFactory<BattleStateMachine, BattleWaitForUnitsAttackStateBase>
+    public interface IBattleWaitForUnitsAttackStateFactory : IFactory<BattleStateMachine, BattleWaitForUnitsAttackState>
     {
         
     }

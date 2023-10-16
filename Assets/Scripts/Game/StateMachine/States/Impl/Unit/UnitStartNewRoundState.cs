@@ -3,9 +3,9 @@ using Game.StateMachine.StateMachine.Impl;
 
 namespace Game.StateMachine.States.Impl.Unit
 {
-    public class UnitStartNewRoundStateBase : UnitStateBase
+    public class UnitStartNewRoundState : UnitStateBase
     {
-        public UnitStartNewRoundStateBase(
+        public UnitStartNewRoundState(
             IUnit unit,
             UnitStateMachine stateMachine
         ) : base(unit, stateMachine)

@@ -5,7 +5,7 @@ using Zenject;
 
 namespace Game.Factories.States.Unit.Impl
 {
-    public class UnitWaitForAttackStateFactory : PlaceholderFactory<IUnit, UnitStateMachine, UnitWaitForAttackStateBase>,
+    public class UnitWaitForAttackStateFactory : PlaceholderFactory<IUnit, UnitStateMachine, UnitWaitForAttackState>,
         IUnitWaitForAttackStateFactory
     {
         

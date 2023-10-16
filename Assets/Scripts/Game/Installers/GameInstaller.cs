@@ -91,31 +91,31 @@ namespace Game.Installers
                     UnitStatsControllerFactory, IUnitStatsControllerFactory>().AsSingle();
             
             Container
-                .BindFactoryCustomInterface<BattleStateMachine, BattleStartNewRoundStateBase, 
+                .BindFactoryCustomInterface<BattleStateMachine, BattleStartNewRoundState, 
                     BattleStartNewRoundStateFactory, IBattleStartNewRoundStateFactory>().AsSingle();
             
             Container
-                .BindFactoryCustomInterface<BattleStateMachine, BattleWaitForUnitsAttackStateBase, 
+                .BindFactoryCustomInterface<BattleStateMachine, BattleWaitForUnitsAttackState, 
                     BattleWaitForUnitsAttackStateFactory, IBattleWaitForUnitsAttackStateFactory>().AsSingle();
             
             Container
-                .BindFactoryCustomInterface<IUnit, UnitStateMachine, UnitApplyBuffStateBase, 
+                .BindFactoryCustomInterface<IUnit, UnitStateMachine, UnitApplyBuffState, 
                     UnitApplyBuffStateFactory, IUnitApplyBuffStateFactory>().AsSingle();
             
             Container
-                .BindFactoryCustomInterface<IUnit, IUnit, UnitStateMachine, UnitAttackStateBase, 
+                .BindFactoryCustomInterface<IUnit, IUnit, UnitStateMachine, UnitAttackState, 
                     UnitAttackStateFactory, IUnitAttackStateFactory>().AsSingle();
             
             Container
-                .BindFactoryCustomInterface<IUnit, UnitStateMachine, UnitStartNewRoundStateBase,
+                .BindFactoryCustomInterface<IUnit, UnitStateMachine, UnitStartNewRoundState,
                     UnitStartNewRoundStateFactory, IUnitStartNewRoundStateFactory>().AsSingle();
             
             Container
-                .BindFactoryCustomInterface<IUnit, UnitStateMachine, UnitWaitForAttackStateBase,
+                .BindFactoryCustomInterface<IUnit, UnitStateMachine, UnitWaitForAttackState,
                     UnitWaitForAttackStateFactory, IUnitWaitForAttackStateFactory>().AsSingle();
             
             Container
-                .BindFactoryCustomInterface<IUnit, UnitStateMachine, UnitWaitForRoundEndStateBase,
+                .BindFactoryCustomInterface<IUnit, UnitStateMachine, UnitWaitForRoundEndState,
                     UnitWaitForRoundEndStateFactory, IUnitWaitForRoundEndStateFactory>().AsSingle();
             
             Container

@@ -5,7 +5,7 @@ using Zenject;
 
 namespace Game.Factories.States.Unit
 {
-    public interface IUnitWaitForRoundEndStateFactory : IFactory<IUnit, UnitStateMachine, UnitWaitForRoundEndStateBase>
+    public interface IUnitWaitForRoundEndStateFactory : IFactory<IUnit, UnitStateMachine, UnitWaitForRoundEndState>
     {
         
     }

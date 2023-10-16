@@ -4,7 +4,7 @@ using Zenject;
 
 namespace Game.Factories.States.Battle
 {
-    public interface IBattleStartNewRoundStateFactory : IFactory<BattleStateMachine, BattleStartNewRoundStateBase>
+    public interface IBattleStartNewRoundStateFactory : IFactory<BattleStateMachine, BattleStartNewRoundState>
     {
         
     }

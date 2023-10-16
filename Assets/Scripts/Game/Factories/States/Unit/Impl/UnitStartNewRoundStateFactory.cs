@@ -5,7 +5,7 @@ using Zenject;
 
 namespace Game.Factories.States.Unit.Impl
 {
-    public class UnitStartNewRoundStateFactory : PlaceholderFactory<IUnit, UnitStateMachine, UnitStartNewRoundStateBase>,
+    public class UnitStartNewRoundStateFactory : PlaceholderFactory<IUnit, UnitStateMachine, UnitStartNewRoundState>,
         IUnitStartNewRoundStateFactory
     {
         

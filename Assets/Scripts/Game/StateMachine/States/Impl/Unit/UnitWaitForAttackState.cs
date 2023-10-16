@@ -3,9 +3,9 @@ using Game.StateMachine.StateMachine.Impl;
 
 namespace Game.StateMachine.States.Impl.Unit
 {
-    public class UnitWaitForAttackStateBase : UnitStateBase
+    public class UnitWaitForAttackState : UnitStateBase
     {
-        public UnitWaitForAttackStateBase(
+        public UnitWaitForAttackState(
             IUnit unit,
             UnitStateMachine unitStateMachine
         ) : base(unit, unitStateMachine)

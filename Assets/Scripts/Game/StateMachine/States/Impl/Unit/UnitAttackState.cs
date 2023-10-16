@@ -5,12 +5,12 @@ using Zenject;
 
 namespace Game.StateMachine.States.Impl.Unit
 {
-    public class UnitAttackStateBase : UnitStateBase
+    public class UnitAttackState : UnitStateBase
     {
         private readonly IUnit _target;
         [Inject] private readonly BattleStateMachine _battleStateMachine;
 
-        public UnitAttackStateBase(
+        public UnitAttackState(
             IUnit attacker, 
             IUnit target, 
             UnitStateMachine stateMachineBase

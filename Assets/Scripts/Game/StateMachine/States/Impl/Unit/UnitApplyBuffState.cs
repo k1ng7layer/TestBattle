@@ -6,13 +6,13 @@ using Zenject;
 
 namespace Game.StateMachine.States.Impl.Unit
 {
-    public class UnitApplyBuffStateBase : UnitStateBase
+    public class UnitApplyBuffState : UnitStateBase
     {
         [Inject] private readonly IBattleSettingsBase _battleSettingsBase;
         [Inject] private readonly IBuffProvider _buffProvider;
         private readonly IUnit _unit;
 
-        public UnitApplyBuffStateBase(
+        public UnitApplyBuffState(
             IUnit unit,
             UnitStateMachine stateMachineBase
         ) : base(unit, stateMachineBase)

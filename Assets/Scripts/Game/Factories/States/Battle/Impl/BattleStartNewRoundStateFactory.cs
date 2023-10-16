@@ -4,7 +4,7 @@ using Zenject;
 
 namespace Game.Factories.States.Battle.Impl
 {
-    public class BattleStartNewRoundStateFactory : PlaceholderFactory<BattleStateMachine, BattleStartNewRoundStateBase>,
+    public class BattleStartNewRoundStateFactory : PlaceholderFactory<BattleStateMachine, BattleStartNewRoundState>,
         IBattleStartNewRoundStateFactory
     {
         

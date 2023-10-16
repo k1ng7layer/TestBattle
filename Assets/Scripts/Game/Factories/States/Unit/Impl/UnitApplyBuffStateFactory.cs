@@ -5,7 +5,7 @@ using Zenject;
 
 namespace Game.Factories.States.Unit.Impl
 {
-    public class UnitApplyBuffStateFactory : PlaceholderFactory<IUnit, UnitStateMachine, UnitApplyBuffStateBase>, 
+    public class UnitApplyBuffStateFactory : PlaceholderFactory<IUnit, UnitStateMachine, UnitApplyBuffState>, 
         IUnitApplyBuffStateFactory
     {
         
