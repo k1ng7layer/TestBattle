@@ -32,7 +32,7 @@ namespace Game.StateMachine.States.Impl.Unit
                 _unit.AddBuff(getBuff);
             }
             
-            StateMachine.ChangeState(EBattleState.WaitForAttack);
+            StateMachine.ChangeState(EBattleState.WaitForAction);
         }
     }
 }

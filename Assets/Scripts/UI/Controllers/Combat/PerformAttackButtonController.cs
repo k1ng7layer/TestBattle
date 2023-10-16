@@ -25,7 +25,7 @@ namespace UI.Controllers.Combat
             _stateMachine.StateChanged += OnStateChanged;
             
             var stateName = _stateMachine.CurrentStateBase.StateName;
-            var canAttack = stateName is EBattleState.WaitForAction or EBattleState.WaitForAttack;
+            var canAttack = stateName is EBattleState.WaitForAction;
             
             View.SetState(canAttack);
         }

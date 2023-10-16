@@ -9,7 +9,6 @@ namespace Game.Services.StateMachineInitializer.Unit.Impl
         private readonly IUnitApplyBuffStateFactory _unitApplyBuffStateFactory;
         private readonly IUnitAttackStateFactory _unitAttackStateFactory;
         private readonly IUnitStartNewRoundStateFactory _unitStartNewRoundStateFactory;
-        private readonly IUnitWaitForAttackStateFactory _unitWaitForAttackStateFactory;
         private readonly IUnitWaitForRoundEndStateFactory _unitWaitForRoundEndStateFactory;
         private readonly IUnitWaitForActionStateFactory _waitForActionStateFactory;
         private readonly IUnitWaitForTurnStateFactory _waitForTurnStateFactory;
@@ -18,7 +17,6 @@ namespace Game.Services.StateMachineInitializer.Unit.Impl
             IUnitApplyBuffStateFactory unitApplyBuffStateFactory,
             IUnitAttackStateFactory unitAttackStateFactory,
             IUnitStartNewRoundStateFactory unitStartNewRoundStateFactory,
-            IUnitWaitForAttackStateFactory unitWaitForAttackStateFactory,
             IUnitWaitForRoundEndStateFactory unitWaitForRoundEndStateFactory,
             IUnitWaitForActionStateFactory waitForActionStateFactory,
             IUnitWaitForTurnStateFactory waitForTurnStateFactory
@@ -27,7 +25,6 @@ namespace Game.Services.StateMachineInitializer.Unit.Impl
             _unitApplyBuffStateFactory = unitApplyBuffStateFactory;
             _unitAttackStateFactory = unitAttackStateFactory;
             _unitStartNewRoundStateFactory = unitStartNewRoundStateFactory;
-            _unitWaitForAttackStateFactory = unitWaitForAttackStateFactory;
             _unitWaitForRoundEndStateFactory = unitWaitForRoundEndStateFactory;
             _waitForActionStateFactory = waitForActionStateFactory;
             _waitForTurnStateFactory = waitForTurnStateFactory;
@@ -38,7 +35,6 @@ namespace Game.Services.StateMachineInitializer.Unit.Impl
             stateMachine.AddState(_unitApplyBuffStateFactory.Create(selfUnit, stateMachine));
             stateMachine.AddState(_unitAttackStateFactory.Create(selfUnit, enemyUnit, stateMachine));
             stateMachine.AddState(_unitStartNewRoundStateFactory.Create(selfUnit, stateMachine));
-            stateMachine.AddState(_unitWaitForAttackStateFactory.Create(selfUnit, stateMachine));
             stateMachine.AddState(_unitWaitForRoundEndStateFactory.Create(selfUnit, stateMachine));
             stateMachine.AddState(_waitForActionStateFactory.Create(selfUnit, stateMachine));
             stateMachine.AddState(_waitForTurnStateFactory.Create(selfUnit, stateMachine));

@@ -95,7 +95,7 @@ namespace Game.Installers
                     BattleStartNewRoundStateFactory, IBattleStartNewRoundStateFactory>().AsSingle();
             
             Container
-                .BindFactoryCustomInterface<BattleStateMachine, BattleWaitForUnitsAttackState, 
+                .BindFactoryCustomInterface<BattleStateMachine, BattleWaitForUnitsActionsState, 
                     BattleWaitForUnitsAttackStateFactory, IBattleWaitForUnitsAttackStateFactory>().AsSingle();
             
             Container
@@ -109,10 +109,6 @@ namespace Game.Installers
             Container
                 .BindFactoryCustomInterface<IUnit, UnitStateMachine, UnitStartNewRoundState,
                     UnitStartNewRoundStateFactory, IUnitStartNewRoundStateFactory>().AsSingle();
-            
-            Container
-                .BindFactoryCustomInterface<IUnit, UnitStateMachine, UnitWaitForAttackState,
-                    UnitWaitForAttackStateFactory, IUnitWaitForAttackStateFactory>().AsSingle();
             
             Container
                 .BindFactoryCustomInterface<IUnit, UnitStateMachine, UnitWaitForRoundEndState,

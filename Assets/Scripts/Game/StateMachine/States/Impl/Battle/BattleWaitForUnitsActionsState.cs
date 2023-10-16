@@ -2,11 +2,11 @@
 
 namespace Game.StateMachine.States.Impl.Battle
 {
-    public class BattleWaitForUnitsAttackState : StateBase
+    public class BattleWaitForUnitsActionsState : StateBase
     {
         private readonly BattleStateMachine _battleStateMachine;
 
-        public BattleWaitForUnitsAttackState(BattleStateMachine battleStateMachine) : base(battleStateMachine)
+        public BattleWaitForUnitsActionsState(BattleStateMachine battleStateMachine) : base(battleStateMachine)
         {
             _battleStateMachine = battleStateMachine;
         }
@@ -47,6 +47,8 @@ namespace Game.StateMachine.States.Impl.Battle
         {
             var leftPlayerSM = _battleStateMachine.LeftPlayerSm;
             var rightPlayerSM = _battleStateMachine.RightPlayerSm;
+            
+            //можно вынести в отдельный стейт
             
             leftPlayerSM.Unit.UpdateState();
             rightPlayerSM.Unit.UpdateState();

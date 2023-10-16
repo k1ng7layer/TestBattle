@@ -5,7 +5,6 @@
         Attack,
         ApplyBuff,
         WaitForAction,
-        WaitForAttack,
         WaitForRoundEnd,
         WaitForTurn,
         WaitForPlayersAttack,
