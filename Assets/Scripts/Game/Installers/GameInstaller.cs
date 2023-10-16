@@ -1,4 +1,5 @@
-﻿using Core.Systems.Impls;
+﻿using System.Collections.Generic;
+using Core.Systems.Impls;
 using Game.Factories.BattleMembers;
 using Game.Factories.BattleMembers.Impl;
 using Game.Factories.Buffs;
@@ -69,7 +70,7 @@ namespace Game.Installers
                 .AsSingle();
             
             Container
-                .BindFactoryCustomInterface<IUnitView, UnitParameters, Unit, UnitFactory, IUnitFactory>()
+                .BindFactoryCustomInterface<IUnitView, List<UnitAttributeParameters>, Unit, UnitFactory, IUnitFactory>()
                 .AsSingle();
             
             Container

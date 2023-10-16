@@ -1,17 +1,14 @@
 ﻿using System;
+using Game.Models.Attributes;
 
 namespace Game.Settings.Unit
 {
     [Serializable]
-    public class UnitParameters
+    public class UnitAttributeParameters
     {
-        public float StartHealth;
-        public float MaxHealth;
-        public float StartArmor;
-        public float MaxArmor;
-        public float StartAttackDamage;
-        public float MaxAttackDamage;
-        public float StartVampirism;
-        public float MaxVampyrism;
+        public EAttributeType AttributeType;
+        public float InitialValue;
+        public float MaxValue;
+        public float MinValue;
     }
 }

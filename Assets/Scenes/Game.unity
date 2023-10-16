@@ -431,30 +431,42 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   leftUnitSettings:
     View: {fileID: 72499731}
-    BattleTeam: 1
-    Order: 0
-    Parameters:
-      StartHealth: 100
-      MaxHealth: 100
-      StartArmor: 0
-      MaxArmor: 100
-      StartAttackDamage: 15
-      MaxAttackDamage: 100
-      StartVampirism: 0
-      MaxVampyrism: 100
+    attributeParameters:
+    - AttributeType: 0
+      InitialValue: 100
+      MaxValue: 100
+      MinValue: 0
+    - AttributeType: 1
+      InitialValue: 0
+      MaxValue: 100
+      MinValue: 0
+    - AttributeType: 2
+      InitialValue: 0
+      MaxValue: 100
+      MinValue: 0
+    - AttributeType: 3
+      InitialValue: 15
+      MaxValue: 100
+      MinValue: 0
   rightUnitSettings:
     View: {fileID: 1535297166}
-    BattleTeam: 0
-    Order: 0
-    Parameters:
-      StartHealth: 100
-      MaxHealth: 100
-      StartArmor: 0
-      MaxArmor: 100
-      StartAttackDamage: 15
-      MaxAttackDamage: 100
-      StartVampirism: 0
-      MaxVampyrism: 100
+    attributeParameters:
+    - AttributeType: 0
+      InitialValue: 100
+      MaxValue: 100
+      MinValue: 0
+    - AttributeType: 1
+      InitialValue: 0
+      MaxValue: 100
+      MinValue: 0
+    - AttributeType: 2
+      InitialValue: 0
+      MaxValue: 100
+      MinValue: 0
+    - AttributeType: 3
+      InitialValue: 15
+      MaxValue: 100
+      MinValue: 0
 --- !u!4 &732328192
 Transform:
   m_ObjectHideFlags: 0

@@ -20,7 +20,6 @@ namespace Game.Systems
         private readonly IUnitStateMachineInitializer _unitStateMachineInitializer;
         private readonly IBattleStateMachineInitializer _battleStateMachineInitializer;
         private readonly BattleStateMachine _battleStateMachine;
-
         private readonly SignalBus _signalBus;
 
         public InitializeGameSystem(
@@ -46,8 +45,8 @@ namespace Game.Systems
         {
             var gameField = _gameFieldProvider.GameField;
             
-            var rightUnit = _unitFactory.Create(gameField.RightUnitSettings.View, gameField.RightUnitSettings.Parameters);
-            var leftUnit = _unitFactory.Create(gameField.LeftUnitSettings.View, gameField.LeftUnitSettings.Parameters);
+            var rightUnit = _unitFactory.Create(gameField.RightUnitSettings.View, gameField.RightUnitSettings.attributeParameters);
+            var leftUnit = _unitFactory.Create(gameField.LeftUnitSettings.View, gameField.LeftUnitSettings.attributeParameters);
             
             var rightUnitStateMachine = _unitStateMachineFactory.Create(rightUnit);
             var leftUnitStateMachine = _unitStateMachineFactory.Create(leftUnit);
@@ -57,6 +56,7 @@ namespace Game.Systems
             
             _battleStateMachineInitializer.InitializeStates(_battleStateMachine);
             _battleStateMachine.Initialize(leftUnitStateMachine, rightUnitStateMachine);
+            
             _battleStateMachine.ChangeState(EBattleState.StartNewRound);
             
             _signalBus.OpenWindow<GameHudWindow>();

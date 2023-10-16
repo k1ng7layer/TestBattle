@@ -15,11 +15,11 @@ namespace Game.Presenters.Unit.Impl
         private readonly List<AttributeModifier> _attackModifiers = new();
         private readonly Dictionary<EAttributeType, CharacterAttribute> _characterAttributes = new();
 
-        public Unit(IUnitView unitView, UnitParameters unitParameters)
+        public Unit(IUnitView unitView, List<UnitAttributeParameters> unitAttributeParameters)
         {
             _unitView = unitView;
 
-            Init(unitParameters);
+            Init(unitAttributeParameters);
         }
 
         public IReadOnlyDictionary<EAttributeType, CharacterAttribute> Attributes => _characterAttributes;
@@ -30,31 +30,16 @@ namespace Game.Presenters.Unit.Impl
         public event Action Dead;
         public event Action<Buff> Buffed;
         
-        private void Init(UnitParameters parameters)
+        private void Init(List<UnitAttributeParameters> attributeParameters)
         {
-            _characterAttributes.Add(EAttributeType.Armor, 
-                new CharacterAttribute(
-                    parameters.StartArmor, 
-                    0, 
-                    parameters.MaxArmor));
-            
-            _characterAttributes.Add(EAttributeType.Health, 
-                new CharacterAttribute(
-                    parameters.StartHealth, 
-                    0, 
-                    parameters.MaxHealth));
-            
-            _characterAttributes.Add(EAttributeType.Vampirism, 
-                new CharacterAttribute(
-                    parameters.StartVampirism, 
-                    0, 
-                    parameters.MaxVampyrism));
-            
-            _characterAttributes.Add(EAttributeType.AttackDamage, 
-                new CharacterAttribute(
-                    parameters.StartAttackDamage, 
-                    0, 
-                    parameters.MaxAttackDamage));
+            foreach (var parameter in attributeParameters)
+            {
+                _characterAttributes.Add(parameter.AttributeType, 
+                    new CharacterAttribute(
+                        parameter.InitialValue, 
+                        parameter.MinValue, 
+                        parameter.MaxValue));
+            }
         }
 
         public void AddBuff(Buff buff)
