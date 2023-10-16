@@ -7,14 +7,17 @@ namespace Game.Services.StateMachineInitializer.Battle.Impl
     {
         private readonly IBattleStartNewRoundStateFactory _startNewRoundStateFactory;
         private readonly IBattleWaitForUnitsAttackStateFactory _waitForUnitsAttackStateFactory;
+        private readonly IBattleCompleteStateFactory _battleCompleteStateFactory;
 
         public BattleStateMachineInitializer(
             IBattleStartNewRoundStateFactory startNewRoundStateFactory,
-            IBattleWaitForUnitsAttackStateFactory waitForUnitsAttackStateFactory
+            IBattleWaitForUnitsAttackStateFactory waitForUnitsAttackStateFactory,
+            IBattleCompleteStateFactory battleCompleteStateFactory
         )
         {
             _startNewRoundStateFactory = startNewRoundStateFactory;
             _waitForUnitsAttackStateFactory = waitForUnitsAttackStateFactory;
+            _battleCompleteStateFactory = battleCompleteStateFactory;
             _waitForUnitsAttackStateFactory = waitForUnitsAttackStateFactory;
         }
         
@@ -22,6 +25,7 @@ namespace Game.Services.StateMachineInitializer.Battle.Impl
         {
             battleStateMachine.AddState(_startNewRoundStateFactory.Create(battleStateMachine));
             battleStateMachine.AddState(_waitForUnitsAttackStateFactory.Create(battleStateMachine));
+            battleStateMachine.AddState(_battleCompleteStateFactory.Create(battleStateMachine));
         }
     }
 }

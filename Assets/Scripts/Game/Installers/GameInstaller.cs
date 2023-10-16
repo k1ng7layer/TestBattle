@@ -125,6 +125,10 @@ namespace Game.Installers
                 .BindFactoryCustomInterface<IUnit, UnitStateMachine, UnitWaitForTurnState,
                     UnitWaitForTurnStateFactory, IUnitWaitForTurnStateFactory>().AsSingle();
             
+            Container
+                .BindFactoryCustomInterface<BattleStateMachine, BattleCompleteState, 
+                    BattleCompleteStateFactory, IBattleCompleteStateFactory>().AsSingle();
+            
             // Container
             //     .BindFactoryCustomInterface<UnitStateMachine, UnitStateMachine, BattleStateMachine,
             //         BattleStateMachineFactory, IBattleStateMachineFactory>().AsSingle();

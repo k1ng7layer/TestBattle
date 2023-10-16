@@ -9,6 +9,7 @@
         WaitForRoundEnd,
         WaitForTurn,
         WaitForPlayersAttack,
-        StartNewRound
+        StartNewRound,
+        BattleComplete
     }
 }

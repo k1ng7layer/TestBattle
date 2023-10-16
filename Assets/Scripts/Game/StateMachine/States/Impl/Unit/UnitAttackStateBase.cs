@@ -1,12 +1,14 @@
 ﻿using Game.Models.Attributes;
 using Game.Presenters.Unit;
 using Game.StateMachine.StateMachine.Impl;
+using Zenject;
 
 namespace Game.StateMachine.States.Impl.Unit
 {
     public class UnitAttackStateBase : UnitStateBase
     {
         private readonly IUnit _target;
+        [Inject] private readonly BattleStateMachine _battleStateMachine;
 
         public UnitAttackStateBase(
             IUnit attacker, 
@@ -24,9 +26,15 @@ namespace Game.StateMachine.States.Impl.Unit
             var damage = Unit.Attributes[EAttributeType.AttackDamage];
             
             var totalDamage = CalculateDamage(_target, damage.Value);
+            
             Unit.PerformAttack();
 
             _target.TakeDamage(totalDamage, Unit.AttackModifiers);
+            
+            var targetHealth = _target.Attributes[EAttributeType.Health];
+            
+            if(targetHealth.Value <= 0)
+                _battleStateMachine.ChangeState(EBattleState.BattleComplete);
             
             StateMachine.ChangeState(EBattleState.WaitForRoundEnd);
         }
