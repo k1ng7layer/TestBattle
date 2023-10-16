@@ -61,6 +61,7 @@ namespace Game.Models.Attributes
                         else
                         {
                             _baseValue += result;
+                            _baseValue = Mathf.Clamp(_baseValue, 0, MaxValue);
                         }
                     }
                 }
