@@ -1,9 +1,11 @@
-﻿using Game.Presenters.Unit;
+﻿using System;
+using Game.Presenters.Unit;
 using SimpleUi.Abstracts;
 
 namespace UI.Controllers.Abstractions
 {
-    public abstract class UnitLinkableController<TView> : IInitializableUiController where TView : UiView
+    public abstract class UnitLinkableController<TView> : IInitializableUiController, 
+        IDisposable where TView : UiView
     {
         public UnitLinkableController(TView view, IUnit unit)
         {
@@ -15,5 +17,13 @@ namespace UI.Controllers.Abstractions
         protected IUnit Unit { get; }
 
         public abstract void Initialize();
+
+        public void Dispose()
+        {
+            OnDispose();
+        }
+
+        protected virtual void OnDispose()
+        { }
     }
 }

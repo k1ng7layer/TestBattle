@@ -1,6 +1,8 @@
-﻿namespace UI.Controllers.Abstractions
+﻿using System;
+
+namespace UI.Controllers.Abstractions
 {
-    public interface IInitializableUiController
+    public interface IInitializableUiController : IDisposable
     {
         void Initialize();
     }

@@ -36,5 +36,10 @@ namespace UI.Controllers.Combat
         {
             View.SetState(battleMember.Unit == Unit);
         }
+
+        protected override void OnDispose()
+        {
+            _attackQueueService.ActiveUnitChanged -= OnAttackUnitChanged;
+        }
     }
 }

@@ -21,7 +21,7 @@ namespace UI.Controllers
         public UnitStatsView UnitStatsView;
     }
     
-    public class GameUiMainController : UiController<GameUiMainView>, IInitializable
+    public class GameUiMainController : UiController<GameUiMainView>, IInitializable, IDisposable
     {
         private readonly ICombatManager _combatManager;
         private readonly IActiveBuffsControllerFactory _activeBuffsControllerFactory;
@@ -84,6 +84,14 @@ namespace UI.Controllers
                 EBattleTeam.Right => View.rightUnitUIViews,
                 EBattleTeam.Left => View.leftUnitUIViews,
             };
+        }
+
+        public void Dispose()
+        {
+            foreach (var controller in _uiControllers)
+            {
+                controller.Dispose();
+            }
         }
     }
 }
