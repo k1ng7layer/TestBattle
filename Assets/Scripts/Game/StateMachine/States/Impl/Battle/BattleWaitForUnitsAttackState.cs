@@ -27,16 +27,31 @@ namespace Game.StateMachine.States.Impl.Battle
             var leftPlayerState = leftPlayerSM.CurrentStateBase.StateName;
             var rightPlayerState = rightPlayerSM.CurrentStateBase.StateName;
 
-            if (leftPlayerState == EBattleState.WaitForRoundEnd && rightPlayerState == EBattleState.WaitForRoundEnd)
-            {
-                leftPlayerSM.Unit.UpdateState();
-                rightPlayerSM.Unit.UpdateState();
-                
-                StateMachine.ChangeState(EBattleState.StartNewRound);
-            }
+            //можно вынести в отдельный стейт
             
-            if(leftPlayerState == EBattleState.WaitForRoundEnd && rightPlayerState == EBattleState.WaitForTurn)
+            if (leftPlayerState == EBattleState.WaitForRoundEnd && 
+                rightPlayerState == EBattleState.WaitForRoundEnd)
+            {
+                StartNewRound();
+            }
+
+            if (leftPlayerState == EBattleState.WaitForRoundEnd &&
+                rightPlayerState == EBattleState.WaitForTurn)
+            {
                 _battleStateMachine.RightPlayerSm.ChangeState(EBattleState.WaitForAction);
+            }
+                
+        }
+
+        private void StartNewRound()
+        {
+            var leftPlayerSM = _battleStateMachine.LeftPlayerSm;
+            var rightPlayerSM = _battleStateMachine.RightPlayerSm;
+            
+            leftPlayerSM.Unit.UpdateState();
+            rightPlayerSM.Unit.UpdateState();
+                
+            StateMachine.ChangeState(EBattleState.StartNewRound);
         }
     }
 }
