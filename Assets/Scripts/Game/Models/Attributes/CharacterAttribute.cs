@@ -37,11 +37,33 @@ namespace Game.Models.Attributes
             }
             set
             {
-                if (value < _additionalValue)
-                    _additionalValue = 0;
-                
-                _baseValue = value;
-                _baseValue = Mathf.Clamp(_baseValue, MinValue, MaxValue);
+                if (value > MaxValue)
+                {
+                    var reminder = value - MaxValue;
+                    _baseValue += reminder;
+                    _baseValue = Mathf.Clamp(_baseValue, 0, MaxValue - _additionalValue);
+                }
+                else
+                {
+                    var result = value - Value;
+                    
+                    if (result > 0)
+                    {
+                        _baseValue += result;
+                    }
+                    else
+                    {
+                        if (_additionalValue > 0)
+                        {
+                            _additionalValue += result;
+                            _additionalValue = Mathf.Clamp(_additionalValue, 0, MaxValue - _baseValue);
+                        }
+                        else
+                        {
+                            _baseValue += result;
+                        }
+                    }
+                }
                 
                 Changed?.Invoke(MaxValue, Value);
             }
@@ -50,6 +72,7 @@ namespace Game.Models.Attributes
         public void AddModifier(AttributeModifier modifier)
         {
             _isDirty = true;
+            
             _modifiers.Add(modifier);
             
             Changed?.Invoke(MaxValue, Value);
@@ -59,36 +82,37 @@ namespace Game.Models.Attributes
         {
             var removed = _modifiers.Remove(modifier);
             
-            var value = _additionalValue;
-
-            if (_additionalValue > 0 && removed)
-            {
-                switch (modifier.ModifierType)
-                {
-                    case EModifierType.Divide:
-                        value += _baseValue;
-                        value *= modifier.Value;
-                        value -= _baseValue;
-                        break;
-                    case EModifierType.Multiply:
-                        value += _baseValue;
-                        value /= modifier.Value;
-                        _additionalValue -= value;
-                        break;
-                    case EModifierType.Add:
-                        value -= modifier.Value;
-                        _additionalValue = value;
-                        break;
-                    case EModifierType.Substract:
-                        value += modifier.Value;
-                        _additionalValue = value;
-                        break;
-                }
-            }
-            
-            _additionalValue = Mathf.Max(_additionalValue, 0);
+            // var value = _additionalValue;
+            //
+            // if (_additionalValue > 0 && removed)
+            // {
+            //     switch (modifier.ModifierType)
+            //     {
+            //         case EModifierType.Divide:
+            //             value += _baseValue;
+            //             value *= modifier.Value;
+            //             value -= _baseValue;
+            //             break;
+            //         case EModifierType.Multiply:
+            //             value += _baseValue;
+            //             value /= modifier.Value;
+            //             _additionalValue -= value;
+            //             break;
+            //         case EModifierType.Add:
+            //             value -= modifier.Value;
+            //             _additionalValue = value;
+            //             break;
+            //         case EModifierType.Substract:
+            //             value += modifier.Value;
+            //             _additionalValue = value;
+            //             break;
+            //     }
+            // }
+            //
+            // _additionalValue = Mathf.Max(_additionalValue, 0);
+            // Changed?.Invoke(MaxValue, Value);
+            _isDirty = true;
             Changed?.Invoke(MaxValue, Value);
-
             return removed;
         }
 

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: ArmorDestructionBuff
   m_EditorClassIdentifier: 
   buffName: Armor destruction
-  lifeTime: 1
+  lifeTime: 2
   staticAttributeModifiers: []
   attackAttributeModifiers:
   - {fileID: 11400000, guid: c3264881c7086604e8c88825ad3971e0, type: 2}
