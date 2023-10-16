@@ -21,6 +21,7 @@ using Game.Services.Round.Impl;
 using Game.Services.TargetService;
 using Game.Services.TargetService.Impl;
 using Game.Settings.Buffs;
+using Game.Settings.Unit;
 using Game.Systems;
 using Game.Views;
 using Game.Views.Unit;
@@ -62,7 +63,7 @@ namespace Game.Installers
                 .AsSingle();
             
             Container
-                .BindFactoryCustomInterface<IUnitView, Unit, UnitFactory, IUnitFactory>()
+                .BindFactoryCustomInterface<IUnitView, UnitParameters, Unit, UnitFactory, IUnitFactory>()
                 .AsSingle();
             
             Container

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Game.Models.Attributes;
 using Game.Models.Buffs;
 using Game.Models.Modifiers;
+using Game.Settings.Unit;
 using Game.Views.Unit;
 using UnityEngine;
 
@@ -11,6 +12,7 @@ namespace Game.Presenters.Unit.Impl
     public class Unit : IUnit
     {
         private readonly IUnitView _unitView;
+        private readonly UnitParameters _unitParameters;
         private readonly CharacterAttribute _health;
         private readonly CharacterAttribute _armor;
         private readonly CharacterAttribute _vampirism;
@@ -18,13 +20,12 @@ namespace Game.Presenters.Unit.Impl
         private readonly List<AttributeModifier> _attackModifiers = new();
         private readonly Dictionary<EAttributeType, CharacterAttribute> _characterAttributes = new();
 
-        public Unit(IUnitView unitView)
+        public Unit(IUnitView unitView, UnitParameters unitParameters)
         {
             _unitView = unitView;
-            _characterAttributes.Add(EAttributeType.Armor, new CharacterAttribute(60, 0, 100));
-            _characterAttributes.Add(EAttributeType.Health, new CharacterAttribute(100, 0, 100));
-            _characterAttributes.Add(EAttributeType.Vampirism, new CharacterAttribute(20, 0, 100));
-            _characterAttributes.Add(EAttributeType.AttackDamage, new CharacterAttribute(20, 0, 100));
+            _unitParameters = unitParameters;
+
+            Init();
         }
 
         public event Action<Buff> BuffExpired;
@@ -104,7 +105,6 @@ namespace Game.Presenters.Unit.Impl
             var health = _characterAttributes[EAttributeType.Health];
 
             var selfHealing = (attackDamage.Value / 100f) * vampirism.Value;
-            Debug.Log($"selfHealing = {selfHealing}");
             
             health.Value += selfHealing;
         }
@@ -135,6 +135,21 @@ namespace Game.Presenters.Unit.Impl
             {
                 TryRemoveBuff(buff);
             }
+        }
+
+        private void Init()
+        {
+            _characterAttributes.Add(EAttributeType.Armor, 
+                new CharacterAttribute(_unitParameters.StartArmor, 0, _unitParameters.MaxArmor));
+            
+            _characterAttributes.Add(EAttributeType.Health, 
+                new CharacterAttribute(_unitParameters.StartHealth, 0, _unitParameters.MaxHealth));
+            
+            _characterAttributes.Add(EAttributeType.Vampirism, 
+                new CharacterAttribute(_unitParameters.StartVampirism, 0, _unitParameters.MaxVampyrism));
+            
+            _characterAttributes.Add(EAttributeType.AttackDamage, 
+                new CharacterAttribute(_unitParameters.StartAttackDamage, 0, _unitParameters.MaxAttackDamage));
         }
     }
 }

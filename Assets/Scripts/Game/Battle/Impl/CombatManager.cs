@@ -6,7 +6,6 @@ using Game.Services.AttackQueueProvider;
 using Game.Services.Round;
 using Game.Services.SceneLoading;
 using Game.Services.TargetService;
-using UnityEngine;
 
 namespace Game.Battle.Impl
 {
@@ -63,7 +62,6 @@ namespace Game.Battle.Impl
         public void Attack()
         {
             var attacker = _attackQueueService.ActiveMember;
-            Debug.Log($"Attack by Attacker {attacker.BattleTeam}");
             var target = _targetService.GetTarget(attacker);
             
             _attackManager.DoAttack(attacker.Unit, target.Unit);

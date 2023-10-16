@@ -10,5 +10,6 @@ namespace Game.Settings.Unit
         public UnitView View;
         public EBattleTeam BattleTeam;
         public int Order;
+        public UnitParameters Parameters;
     }
 }

@@ -13,3 +13,4 @@ MonoBehaviour:
   m_Name: GameSettingsInstaller
   m_EditorClassIdentifier: 
   buffsSettingsBase: {fileID: 11400000, guid: cd9dcb2579788a2489868f2490ba183e, type: 2}
+  battleSettings: {fileID: 11400000, guid: b8908c007afed614cbfe1edc89f14ffb, type: 2}

@@ -18,22 +18,19 @@ namespace Game.Systems
         private readonly ICombatManager _combatManager;
         private readonly IUnitFactory _unitFactory;
         private readonly IBattleMemberFactory _battleMemberFactory;
-        private readonly DiContainer _diContainer;
         private readonly SignalBus _signalBus;
 
         public InitializeGameSystem(
             IGameFieldProvider gameFieldProvider, 
             ICombatManager combatManager,
             IUnitFactory unitFactory,
-            IBattleMemberFactory battleMemberFactory,
-            DiContainer diContainer, 
+            IBattleMemberFactory battleMemberFactory, 
             SignalBus signalBus
         )
         {
             _gameFieldProvider = gameFieldProvider;
             _unitFactory = unitFactory;
             _battleMemberFactory = battleMemberFactory;
-            _diContainer = diContainer;
             _signalBus = signalBus;
             _combatManager = combatManager;
         }
@@ -46,8 +43,7 @@ namespace Game.Systems
             for (int i = 0; i < gameField.UnitsViews.Count; i++)
             {
                 var unitSettings = gameField.UnitsViews[i];
-                
-                var unit = _unitFactory.Create(unitSettings.View);
+                var unit = _unitFactory.Create(unitSettings.View, unitSettings.Parameters);
 
                 InitializeUI(unit);
                 
