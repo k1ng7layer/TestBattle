@@ -1,13 +1,14 @@
-﻿using System.Collections.Generic;
-using Game.Settings.Unit;
+﻿using Game.Settings.Unit;
 using UnityEngine;
 
 namespace Game.Views
 {
     public class GameFieldView : MonoBehaviour
     {
-        [SerializeField] private List<UnitSceneSettings> unitSceneSettings;
+        [SerializeField] private UnitSceneSettings leftUnitSettings;
+        [SerializeField] private UnitSceneSettings rightUnitSettings;
         
-        public List<UnitSceneSettings> UnitsViews => unitSceneSettings;
+        public UnitSceneSettings LeftUnitSettings => leftUnitSettings;
+        public UnitSceneSettings RightUnitSettings => rightUnitSettings;
     }
 }

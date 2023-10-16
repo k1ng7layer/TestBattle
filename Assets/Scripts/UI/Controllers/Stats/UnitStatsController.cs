@@ -6,19 +6,17 @@ namespace UI.Controllers.Stats
 {
     public class UnitStatsController : UnitLinkableController<UnitStatsView>
     {
-        public UnitStatsController(
-            UnitStatsView view, 
-            IUnit unit) : base(view, unit)
+        public UnitStatsController(UnitStatsView view, IUnit unit) : base(view, unit)
         {
         }
 
         public override void Initialize()
         {
-            SubscribeOnUpdate(Unit);
+            SubscribeOnStatsUpdate(Unit);
             UpdateStat(Unit);
         }
         
-        private void SubscribeOnUpdate(IUnit unit)
+        private void SubscribeOnStatsUpdate(IUnit unit)
         {
             foreach (var attributeKvp in unit.Attributes)
             {

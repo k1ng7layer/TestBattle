@@ -1,45 +1,49 @@
-﻿using Game.Battle;
-using Game.Models.Combat;
-using Game.Presenters.Unit;
-using Game.Services.AttackQueueProvider;
+﻿using Game.Presenters.Unit;
+using Game.StateMachine.StateMachine.Impl;
+using Game.StateMachine.States;
 using UI.Controllers.Abstractions;
 using UI.Views.Combat;
 using UniRx;
-using Zenject;
 
 namespace UI.Controllers.Combat
 {
     public class PerformAttackButtonController : UnitLinkableController<AttackButtonView>
     {
-        [Inject] private readonly IAttackQueueService _attackQueueService;
-        [Inject] private readonly ICombatManager _combatManager;
+        // [Inject] private readonly BattleStateMachine _battleStateMachine;
+        
+        private readonly UnitStateMachine _stateMachine;
 
-        public PerformAttackButtonController(AttackButtonView view, IUnit unit) : base(view, unit)
+        public PerformAttackButtonController(
+            AttackButtonView view, 
+            IUnit unit, 
+            UnitStateMachine stateMachine) : base(view, unit)
         {
-    
+            _stateMachine = stateMachine;
         }
 
         public override void Initialize()
         {
             View.attackButton.OnClickAsObservable().Subscribe(_ => Attack()).AddTo(View);
-            _attackQueueService.ActiveUnitChanged += OnAttackUnitChanged;
             
-            View.SetState(_attackQueueService.ActiveMember.Unit == Unit);
+            View.SetState(_stateMachine.CurrentStateBase.StateName is EBattleState.WaitForAction or EBattleState.WaitForAttack);
+            _stateMachine.StateChanged += OnAttackState;
         }
 
         private void Attack()
         {
-            _combatManager.Attack();
+            _stateMachine.ChangeState(EBattleState.Attack);
         }
 
-        private void OnAttackUnitChanged(BattleMember battleMember)
+        private void OnAttackState(EBattleState state)
         {
-            View.SetState(battleMember.Unit == Unit);
+            var canAttack = state != EBattleState.WaitForRoundEnd;
+            
+            View.SetState(canAttack);
         }
 
         protected override void OnDispose()
         {
-            _attackQueueService.ActiveUnitChanged -= OnAttackUnitChanged;
+            _stateMachine.StateChanged -= OnAttackState;
         }
     }
 }

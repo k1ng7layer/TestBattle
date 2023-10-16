@@ -1,5 +1,7 @@
 ﻿using System;
 using Game.Services.Round;
+using Game.StateMachine.StateMachine.Impl;
+using Game.StateMachine.States;
 using SimpleUi.Abstracts;
 using UI.Views.Round;
 using Zenject;
@@ -11,7 +13,11 @@ namespace UI.Controllers.Round
         IDisposable
     {
         private readonly IRoundProvider _roundProvider;
+        
+        [Inject] private readonly BattleStateMachine _battleStateMachine;
 
+        private int _roundNumValue;
+        
         public RoundCounterController(IRoundProvider roundProvider)
         {
             _roundProvider = roundProvider;
@@ -22,6 +28,18 @@ namespace UI.Controllers.Round
             _roundProvider.RoundChanged += DisplayRound;
             
             DisplayRound(_roundProvider.CurrentRound);
+
+            _battleStateMachine.StateChanged += OnBattleStateChanged;
+        }
+
+        private void OnBattleStateChanged(EBattleState state)
+        {
+            if(state != EBattleState.StartNewRound)
+                return;
+
+            _roundNumValue++;
+
+            DisplayRound(_roundNumValue);
         }
 
         private void DisplayRound(int round)
@@ -31,7 +49,7 @@ namespace UI.Controllers.Round
 
         public void Dispose()
         {
-            _roundProvider.RoundChanged -= DisplayRound;
+            _battleStateMachine.StateChanged -= OnBattleStateChanged;
         }
     }
 }

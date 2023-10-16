@@ -4,6 +4,12 @@ using Game.Factories.BattleMembers;
 using Game.Factories.BattleMembers.Impl;
 using Game.Factories.Buffs;
 using Game.Factories.Buffs.Impl;
+using Game.Factories.StateMachine.Unit;
+using Game.Factories.StateMachine.Unit.Impl;
+using Game.Factories.States.Battle;
+using Game.Factories.States.Battle.Impl;
+using Game.Factories.States.Unit;
+using Game.Factories.States.Unit.Impl;
 using Game.Factories.Ui;
 using Game.Factories.Ui.Impl;
 using Game.Factories.Unit;
@@ -18,10 +24,15 @@ using Game.Services.Buffs.Impl;
 using Game.Services.GameField;
 using Game.Services.GameField.Impl;
 using Game.Services.Round.Impl;
+using Game.Services.StateMachineInitializer.Battle.Impl;
+using Game.Services.StateMachineInitializer.Unit.Impl;
 using Game.Services.TargetService;
 using Game.Services.TargetService.Impl;
 using Game.Settings.Buffs;
 using Game.Settings.Unit;
+using Game.StateMachine.StateMachine.Impl;
+using Game.StateMachine.States.Impl.Battle;
+using Game.StateMachine.States.Impl.Unit;
 using Game.Systems;
 using Game.Views;
 using Game.Views.Unit;
@@ -48,6 +59,7 @@ namespace Game.Installers
             BindFactories();
             BindServices();
             BindSystems();
+            BindStateMachines();
 
             Container.BindInterfacesAndSelfTo<GameHudWindow>().AsSingle();
         }
@@ -67,7 +79,7 @@ namespace Game.Installers
                 .AsSingle();
             
             Container
-                .BindFactoryCustomInterface<ApplyBuffButtonView, IUnit, 
+                .BindFactoryCustomInterface<ApplyBuffButtonView, IUnit, UnitStateMachine, 
                     ApplyBuffController, ApplyBuffControllerFactory, IApplyBuffControllerFactory>().AsSingle();
             
             Container
@@ -75,13 +87,57 @@ namespace Game.Installers
                     ActiveBuffsControllerFactory, IActiveBuffsControllerFactory>().AsSingle();
             
             Container
-                .BindFactoryCustomInterface<AttackButtonView, IUnit,
+                .BindFactoryCustomInterface<AttackButtonView, IUnit, UnitStateMachine,
                     PerformAttackButtonController, PerformAttackButtonControllerFactory, 
                     IPerformAttackButtonControllerFactory>().AsSingle();
             
             Container
                 .BindFactoryCustomInterface<UnitStatsView, IUnit, UnitStatsController, 
                     UnitStatsControllerFactory, IUnitStatsControllerFactory>().AsSingle();
+            
+            Container
+                .BindFactoryCustomInterface<BattleStateMachine, BattleStartNewRoundStateBase, 
+                    BattleStartNewRoundStateFactory, IBattleStartNewRoundStateFactory>().AsSingle();
+            
+            Container
+                .BindFactoryCustomInterface<BattleStateMachine, BattleWaitForUnitsAttackStateBase, 
+                    BattleWaitForUnitsAttackStateFactory, IBattleWaitForUnitsAttackStateFactory>().AsSingle();
+            
+            Container
+                .BindFactoryCustomInterface<IUnit, UnitStateMachine, UnitApplyBuffStateBase, 
+                    UnitApplyBuffStateFactory, IUnitApplyBuffStateFactory>().AsSingle();
+            
+            Container
+                .BindFactoryCustomInterface<IUnit, IUnit, UnitStateMachine, UnitAttackStateBase, 
+                    UnitAttackStateFactory, IUnitAttackStateFactory>().AsSingle();
+            
+            Container
+                .BindFactoryCustomInterface<IUnit, UnitStateMachine, UnitStartNewRoundStateBase,
+                    UnitStartNewRoundStateFactory, IUnitStartNewRoundStateFactory>().AsSingle();
+            
+            Container
+                .BindFactoryCustomInterface<IUnit, UnitStateMachine, UnitWaitForAttackStateBase,
+                    UnitWaitForAttackStateFactory, IUnitWaitForAttackStateFactory>().AsSingle();
+            
+            Container
+                .BindFactoryCustomInterface<IUnit, UnitStateMachine, UnitWaitForRoundEndStateBase,
+                    UnitWaitForRoundEndStateFactory, IUnitWaitForRoundEndStateFactory>().AsSingle();
+            
+            Container
+                .BindFactoryCustomInterface<IUnit, UnitStateMachine, UnitWaitForActionState,
+                    UnitWaitForActionStateFactoryFactory, IUnitWaitForActionStateFactory>().AsSingle();
+            
+            Container
+                .BindFactoryCustomInterface<IUnit, UnitStateMachine, UnitWaitForTurnState,
+                    UnitWaitForTurnStateFactory, IUnitWaitForTurnStateFactory>().AsSingle();
+            
+            // Container
+            //     .BindFactoryCustomInterface<UnitStateMachine, UnitStateMachine, BattleStateMachine,
+            //         BattleStateMachineFactory, IBattleStateMachineFactory>().AsSingle();
+            
+            Container
+                .BindFactoryCustomInterface<IUnit, UnitStateMachine,
+                    UnitStateMachineFactory, IUnitStateMachineFactory>().AsSingle();
             
         }
 
@@ -92,6 +148,8 @@ namespace Game.Installers
             Container.BindInterfacesAndSelfTo<RoundProvider>().AsSingle();
             Container.BindInterfacesAndSelfTo<AttackQueueService>().AsSingle();
             Container.BindInterfacesAndSelfTo<AttackManager>().AsSingle();
+            Container.BindInterfacesAndSelfTo<BattleStateMachineInitializer>().AsSingle();
+            Container.BindInterfacesAndSelfTo<UnitStateMachineInitializer>().AsSingle();
             
             Container.Bind<ITargetService>().To<СircularTargetService>().AsSingle();
         }
@@ -105,6 +163,11 @@ namespace Game.Installers
         {
             var gameFieldProvider = new GameFieldProvider(gameFieldView);
             Container.Bind<IGameFieldProvider>().To<GameFieldProvider>().FromInstance(gameFieldProvider);
+        }
+
+        private void BindStateMachines()
+        {
+            Container.BindInterfacesAndSelfTo<BattleStateMachine>().AsSingle();
         }
         
     }

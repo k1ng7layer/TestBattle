@@ -1,11 +1,13 @@
-﻿using System.Collections.Generic;
-using Core.Systems;
+﻿using Core.Systems;
 using Game.Battle;
 using Game.Factories.BattleMembers.Impl;
+using Game.Factories.StateMachine.Unit;
 using Game.Factories.Unit;
-using Game.Models.Combat;
-using Game.Presenters.Unit;
 using Game.Services.GameField;
+using Game.Services.StateMachineInitializer.Battle;
+using Game.Services.StateMachineInitializer.Unit;
+using Game.StateMachine.StateMachine.Impl;
+using Game.StateMachine.States;
 using SimpleUi.Signals;
 using UI.Windows;
 using Zenject;
@@ -18,19 +20,32 @@ namespace Game.Systems
         private readonly ICombatManager _combatManager;
         private readonly IUnitFactory _unitFactory;
         private readonly IBattleMemberFactory _battleMemberFactory;
+        private readonly IUnitStateMachineFactory _unitStateMachineFactory;
+        private readonly IUnitStateMachineInitializer _unitStateMachineInitializer;
+        private readonly IBattleStateMachineInitializer _battleStateMachineInitializer;
+        private readonly BattleStateMachine _battleStateMachine;
+
         private readonly SignalBus _signalBus;
 
         public InitializeGameSystem(
             IGameFieldProvider gameFieldProvider, 
             ICombatManager combatManager,
             IUnitFactory unitFactory,
-            IBattleMemberFactory battleMemberFactory, 
+            IBattleMemberFactory battleMemberFactory,
+            IUnitStateMachineFactory unitStateMachineFactory,
+            IUnitStateMachineInitializer unitStateMachineInitializer,
+            IBattleStateMachineInitializer battleStateMachineInitializer,
+            BattleStateMachine battleStateMachine,
             SignalBus signalBus
         )
         {
             _gameFieldProvider = gameFieldProvider;
             _unitFactory = unitFactory;
             _battleMemberFactory = battleMemberFactory;
+            _unitStateMachineFactory = unitStateMachineFactory;
+            _unitStateMachineInitializer = unitStateMachineInitializer;
+            _battleStateMachineInitializer = battleStateMachineInitializer;
+            _battleStateMachine = battleStateMachine;
             _signalBus = signalBus;
             _combatManager = combatManager;
         }
@@ -38,32 +53,22 @@ namespace Game.Systems
         public void Initialize()
         {
             var gameField = _gameFieldProvider.GameField;
-            var battleMembers = new List<BattleMember>();
             
-            for (int i = 0; i < gameField.UnitsViews.Count; i++)
-            {
-                var unitSettings = gameField.UnitsViews[i];
-                var unit = _unitFactory.Create(unitSettings.View, unitSettings.Parameters);
-
-                InitializeUI(unit);
-                
-                var battleMember = _battleMemberFactory.Create(unit, unitSettings.BattleTeam, unitSettings.Order);
-                    
-                battleMembers.Add(battleMember);
-            }
+            var rightUnit = _unitFactory.Create(gameField.RightUnitSettings.View, gameField.RightUnitSettings.Parameters);
+            var leftUnit = _unitFactory.Create(gameField.LeftUnitSettings.View, gameField.LeftUnitSettings.Parameters);
             
-            _combatManager.StartCombat(battleMembers);
+            var rightUnitStateMachine = _unitStateMachineFactory.Create(rightUnit);
+            var leftUnitStateMachine = _unitStateMachineFactory.Create(leftUnit);
+            
+            _unitStateMachineInitializer.InitializeStates(rightUnit, leftUnit, rightUnitStateMachine);
+            _unitStateMachineInitializer.InitializeStates(leftUnit, rightUnit, leftUnitStateMachine);
+            
+            _battleStateMachineInitializer.InitializeStates(_battleStateMachine);
+            _battleStateMachine.Initialize(leftUnitStateMachine, rightUnitStateMachine);
+            _battleStateMachine.ChangeState(EBattleState.StartNewRound);
             
             _signalBus.OpenWindow<GameHudWindow>();
         }
-
-        private void InitializeUI(IUnit unit)
-        {
-            // var statController = new UnitStatsController();
-            //
-            // _diContainer.Inject(statController);
-            //
-            // statController.AttachUnit(unit);
-        }
+        
     }
 }

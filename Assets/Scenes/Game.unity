@@ -429,10 +429,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cf952fc9af0b4e8c972f915fb413d3b2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unitSceneSettings:
-  - View: {fileID: 72499731}
+  leftUnitSettings:
+    View: {fileID: 72499731}
     BattleTeam: 1
-    Order: 1
+    Order: 0
     Parameters:
       StartHealth: 100
       MaxHealth: 100
@@ -442,9 +442,10 @@ MonoBehaviour:
       MaxAttackDamage: 100
       StartVampirism: 0
       MaxVampyrism: 100
-  - View: {fileID: 1535297166}
+  rightUnitSettings:
+    View: {fileID: 1535297166}
     BattleTeam: 0
-    Order: 2
+    Order: 0
     Parameters:
       StartHealth: 100
       MaxHealth: 100

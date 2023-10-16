@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
 using Game.Models.Buffs;
 using Game.Presenters.Unit;
-using Game.Services.Round;
+using Game.StateMachine.StateMachine.Impl;
+using Game.StateMachine.States;
 using UI.Controllers.Abstractions;
 using UI.Views.Buffs;
 using Zenject;
@@ -9,8 +10,8 @@ using Zenject;
 namespace UI.Controllers.Combat
 {
     public class ActiveBuffsController : UnitLinkableController<ActiveBuffsView>
-    { 
-        [Inject] private readonly IRoundProvider _roundProvider;
+    {
+        [Inject] private readonly BattleStateMachine _battleStateMachine;
         
         private readonly Dictionary<string, ActiveBuffViewElement> _activeBuffsViewElements = new();
 
@@ -26,7 +27,8 @@ namespace UI.Controllers.Combat
         {
             Unit.Buffed += OnBuffed;
             Unit.BuffExpired += OnBuffExpired;
-            _roundProvider.RoundChanged += UpdateBuffInfo;
+            
+            _battleStateMachine.StateChanged += UpdateBuffInfo;
         }
 
         private void OnBuffed(Buff buff)
@@ -46,8 +48,11 @@ namespace UI.Controllers.Combat
             View.ActiveBuffCollection.Remove(buffView);
         }
 
-        private void UpdateBuffInfo(int _)
+        private void UpdateBuffInfo(EBattleState battleState)
         {
+            if(battleState != EBattleState.StartNewRound)
+                return;
+            
             foreach (var buffView in _activeBuffsViewElements)
             {
                 var buff = Unit.StaticBuffs[buffView.Key];

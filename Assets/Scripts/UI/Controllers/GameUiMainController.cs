@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using Game.Battle;
 using Game.Factories.Ui;
 using Game.Models.Combat;
+using Game.Presenters.Unit;
+using Game.StateMachine.StateMachine.Impl;
 using SimpleUi.Abstracts;
 using UI.Controllers.Abstractions;
 using UI.Views.Buffs;
@@ -23,6 +25,8 @@ namespace UI.Controllers
     
     public class GameUiMainController : UiController<GameUiMainView>, IInitializable, IDisposable
     {
+        [Inject] private readonly BattleStateMachine _battleStateMachine;
+        
         private readonly ICombatManager _combatManager;
         private readonly IActiveBuffsControllerFactory _activeBuffsControllerFactory;
         private readonly IApplyBuffControllerFactory _applyBuffControllerFactory;
@@ -51,10 +55,13 @@ namespace UI.Controllers
             _combatManager.BattleStarted += OnCombatStarted;
         }
 
-        private void OnCombatStarted(BattleMember leftMember, BattleMember rightMember)
+        public override void OnShow()
         {
-            CreateControllersForBattleUnit(leftMember);
-            CreateControllersForBattleUnit(rightMember);
+            var leftUnit = _battleStateMachine.LeftPlayerSm.Unit;
+            var rightUnit = _battleStateMachine.RightPlayerSm.Unit;
+            
+            CreateControllersForBattleUnit(leftUnit, View.leftUnitUIViews, _battleStateMachine.LeftPlayerSm);
+            CreateControllersForBattleUnit(rightUnit, View.rightUnitUIViews, _battleStateMachine.RightPlayerSm);
             
             foreach (var controller in _uiControllers)
             {
@@ -62,14 +69,27 @@ namespace UI.Controllers
             }
         }
 
-        private void CreateControllersForBattleUnit(BattleMember battleMember)
+        private void OnCombatStarted(BattleMember leftMember, BattleMember rightMember)
         {
-            var views = GetViews(battleMember.BattleTeam);
+            // var leftViews = View.leftUnitUIViews;
+            //
+            // CreateControllersForBattleUnit(leftMember);
+            // CreateControllersForBattleUnit(rightMember);
+            //
+            // foreach (var controller in _uiControllers)
+            // {
+            //     controller.Initialize();
+            // }
+        }
+
+        private void CreateControllersForBattleUnit(IUnit unit, UnitUIViews views, UnitStateMachine stateMachine)
+        {
+            //var views = GetViews(battleMember.BattleTeam);
             
-            var applyBuffController = _applyBuffControllerFactory.Create(views.ApplyBuffButtonView, battleMember.Unit);
-            var attackButton = _performAttackButtonControllerFactory.Create(views.AttackButtonView, battleMember.Unit);
-            var statsView = _unitStatsControllerFactory.Create(views.UnitStatsView, battleMember.Unit);
-            var activeBuffsController = _activeBuffsControllerFactory.Create(views.ActiveBuffsView, battleMember.Unit);
+            var applyBuffController = _applyBuffControllerFactory.Create(views.ApplyBuffButtonView, unit, stateMachine);
+            var attackButton = _performAttackButtonControllerFactory.Create(views.AttackButtonView, unit, stateMachine);
+            var statsView = _unitStatsControllerFactory.Create(views.UnitStatsView, unit);
+            var activeBuffsController = _activeBuffsControllerFactory.Create(views.ActiveBuffsView, unit);
             
             _uiControllers.Add(applyBuffController);
             _uiControllers.Add(attackButton);
