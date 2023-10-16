@@ -53,8 +53,8 @@ namespace UI.Controllers
 
         private void OnCombatStarted(BattleMember leftMember, BattleMember rightMember)
         {
-            Init(leftMember);
-            Init(rightMember);
+            CreateControllersForBattleUnit(leftMember);
+            CreateControllersForBattleUnit(rightMember);
             
             foreach (var controller in _uiControllers)
             {
@@ -62,7 +62,7 @@ namespace UI.Controllers
             }
         }
 
-        private void Init(BattleMember battleMember)
+        private void CreateControllersForBattleUnit(BattleMember battleMember)
         {
             var views = GetViews(battleMember.BattleTeam);
             

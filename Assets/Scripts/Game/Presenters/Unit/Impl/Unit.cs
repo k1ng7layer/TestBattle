@@ -5,7 +5,6 @@ using Game.Models.Buffs;
 using Game.Models.Modifiers;
 using Game.Settings.Unit;
 using Game.Views.Unit;
-using UnityEngine;
 
 namespace Game.Presenters.Unit.Impl
 {
@@ -35,6 +34,33 @@ namespace Game.Presenters.Unit.Impl
         
         public event Action Dead;
         public event Action<Buff> Buffed;
+        
+        private void Init()
+        {
+            _characterAttributes.Add(EAttributeType.Armor, 
+                new CharacterAttribute(
+                    _unitParameters.StartArmor, 
+                    0, 
+                    _unitParameters.MaxArmor));
+            
+            _characterAttributes.Add(EAttributeType.Health, 
+                new CharacterAttribute(
+                    _unitParameters.StartHealth, 
+                    0, 
+                    _unitParameters.MaxHealth));
+            
+            _characterAttributes.Add(EAttributeType.Vampirism, 
+                new CharacterAttribute(
+                    _unitParameters.StartVampirism, 
+                    0, 
+                    _unitParameters.MaxVampyrism));
+            
+            _characterAttributes.Add(EAttributeType.AttackDamage, 
+                new CharacterAttribute(
+                    _unitParameters.StartAttackDamage, 
+                    0, 
+                    _unitParameters.MaxAttackDamage));
+        }
 
         public void AddBuff(Buff buff)
         {
@@ -44,14 +70,13 @@ namespace Game.Presenters.Unit.Impl
                 return;
             
             _buffs.Add(buff.BuffName, buff);
-            Debug.Log($"Added buff {buff.BuffName}");
             
             buff.Apply(this);
             
             Buffed?.Invoke(buff);
         }
 
-        public bool TryRemoveBuff(Buff buff)
+        private bool TryRemoveBuff(Buff buff)
         {
             var result =  _buffs.Remove(buff.BuffName);
 
@@ -135,21 +160,6 @@ namespace Game.Presenters.Unit.Impl
             {
                 TryRemoveBuff(buff);
             }
-        }
-
-        private void Init()
-        {
-            _characterAttributes.Add(EAttributeType.Armor, 
-                new CharacterAttribute(_unitParameters.StartArmor, 0, _unitParameters.MaxArmor));
-            
-            _characterAttributes.Add(EAttributeType.Health, 
-                new CharacterAttribute(_unitParameters.StartHealth, 0, _unitParameters.MaxHealth));
-            
-            _characterAttributes.Add(EAttributeType.Vampirism, 
-                new CharacterAttribute(_unitParameters.StartVampirism, 0, _unitParameters.MaxVampyrism));
-            
-            _characterAttributes.Add(EAttributeType.AttackDamage, 
-                new CharacterAttribute(_unitParameters.StartAttackDamage, 0, _unitParameters.MaxAttackDamage));
         }
     }
 }
