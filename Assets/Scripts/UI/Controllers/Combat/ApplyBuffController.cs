@@ -1,5 +1,4 @@
 ﻿using Game.Models.Buffs;
-using Game.Models.Combat;
 using Game.Presenters.Unit;
 using Game.Settings.Battle;
 using Game.StateMachine.StateMachine.Impl;
@@ -28,13 +27,13 @@ namespace UI.Controllers.Combat
 
         public override void Initialize()
         {
-            var state = _unitStateMachine.CurrentStateBase.StateName;
             _unitStateMachine.StateChanged += OnStateChanged;
-            View.SetState(false);
             View.applyButton.OnClickAsObservable().Subscribe(_ => AddBuff()).AddTo(View);
-            View.SetState(state == EBattleState.WaitForAction);
             Unit.Buffed += OnBuffed;
             Unit.BuffExpired += OnBuffExpired;
+            
+            var canUse = CanUseBuff();
+            View.SetState(canUse);
         }
 
         private void OnStateChanged(EBattleState state)
@@ -70,13 +69,6 @@ namespace UI.Controllers.Combat
         private void AddBuff()
         {
             _unitStateMachine.ChangeState(EBattleState.ApplyBuff);
-        }
-        
-        private void OnAttackUnitChanged(BattleMember battleMember)
-        {
-            var canUse = CanUseBuff();
-            
-            View.SetState(canUse);
         }
 
         protected override void OnDispose()
