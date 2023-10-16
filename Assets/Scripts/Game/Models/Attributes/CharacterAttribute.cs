@@ -83,37 +83,9 @@ namespace Game.Models.Attributes
         {
             var removed = _modifiers.Remove(modifier);
             
-            // var value = _additionalValue;
-            //
-            // if (_additionalValue > 0 && removed)
-            // {
-            //     switch (modifier.ModifierType)
-            //     {
-            //         case EModifierType.Divide:
-            //             value += _baseValue;
-            //             value *= modifier.Value;
-            //             value -= _baseValue;
-            //             break;
-            //         case EModifierType.Multiply:
-            //             value += _baseValue;
-            //             value /= modifier.Value;
-            //             _additionalValue -= value;
-            //             break;
-            //         case EModifierType.Add:
-            //             value -= modifier.Value;
-            //             _additionalValue = value;
-            //             break;
-            //         case EModifierType.Substract:
-            //             value += modifier.Value;
-            //             _additionalValue = value;
-            //             break;
-            //     }
-            // }
-            //
-            // _additionalValue = Mathf.Max(_additionalValue, 0);
-            // Changed?.Invoke(MaxValue, Value);
             _isDirty = true;
             Changed?.Invoke(MaxValue, Value);
+            
             return removed;
         }
 
