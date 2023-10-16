@@ -2,10 +2,10 @@
 {
     public enum EBuffType
     {
-        DoubleDamage,
+        //DoubleDamage,
         ArmorSelf,
-        ArmorDestruction,
+        //ArmorDestruction,
         VampirismSelf,
-        VampirismDecrease
+        //VampirismDecrease
     }
 }

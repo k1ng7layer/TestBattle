@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6be07db234874e77aa2b8e42ade3b9d8, type: 3}
   m_Name: ArmorIncrease50
   m_EditorClassIdentifier: 
-  attributeType: 0
-  modifierType: 0
-  value: 0
+  attributeType: 1
+  modifierType: 2
+  value: 50

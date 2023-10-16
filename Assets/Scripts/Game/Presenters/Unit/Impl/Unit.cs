@@ -21,7 +21,7 @@ namespace Game.Presenters.Unit.Impl
         public Unit(IUnitView unitView)
         {
             _unitView = unitView;
-            _characterAttributes.Add(EAttributeType.Armor, new CharacterAttribute(0, 0, 100));
+            _characterAttributes.Add(EAttributeType.Armor, new CharacterAttribute(60, 0, 100));
             _characterAttributes.Add(EAttributeType.Health, new CharacterAttribute(100, 0, 100));
             _characterAttributes.Add(EAttributeType.Vampirism, new CharacterAttribute(20, 0, 100));
             _characterAttributes.Add(EAttributeType.AttackDamage, new CharacterAttribute(20, 0, 100));
@@ -69,9 +69,6 @@ namespace Game.Presenters.Unit.Impl
             var vampirism = _characterAttributes[EAttributeType.Vampirism];
             var attackAttribute = _characterAttributes[EAttributeType.AttackDamage];
             
-            var armorAffection = attackDamage - attackDamage / 100f * armor.Value;
-            health.Value -= armorAffection;
-            
             foreach (var attributeModifier in attributeModifiers)
             {
                 switch (attributeModifier.AttributeType)
@@ -91,6 +88,9 @@ namespace Game.Presenters.Unit.Impl
                 }
             }
             
+            var armorAffection = attackDamage - attackDamage / 100f * armor.Value;
+            health.Value -= armorAffection;
+            
             _unitView.OnTakeDamage();
             
             if(health.Value <= 0)
@@ -103,7 +103,8 @@ namespace Game.Presenters.Unit.Impl
             var attackDamage = _characterAttributes[EAttributeType.AttackDamage];
             var health = _characterAttributes[EAttributeType.Health];
 
-            var selfHealing = attackDamage.Value * vampirism.Value / 100f;
+            var selfHealing = (attackDamage.Value / 100f) * vampirism.Value;
+            Debug.Log($"selfHealing = {selfHealing}");
             
             health.Value += selfHealing;
         }

@@ -1,11 +1,11 @@
-﻿using System;
-using Game.Presenters.Unit;
+﻿using Game.Presenters.Unit;
 using UI.Controllers.Abstractions;
 using UI.Views.Stats;
+using UnityEngine;
 
 namespace UI.Controllers.Stats
 {
-    public class UnitStatsController : UnitLinkableController<UnitStatsView>, IDisposable
+    public class UnitStatsController : UnitLinkableController<UnitStatsView>
     {
         public UnitStatsController(
             UnitStatsView view, 
@@ -21,29 +21,31 @@ namespace UI.Controllers.Stats
         
         private void SubscribeOnUpdate(IUnit unit)
         {
-            foreach (var attribute in unit.Attributes)
+            foreach (var attributeKvp in unit.Attributes)
             {
-                attribute.Value.Changed += Update;
+                var attribute = attributeKvp.Value;
+               
+                attribute.Changed += Update;
+                
                 continue;
 
-                void Update(float value)
+                void Update(float maxValue, float value)
                 {
-                    View.UpdateStat(attribute.Key, value);
+                    var percents = value / maxValue;
+                    Debug.Log($"set slider {attributeKvp.Key}, value = {value}, percents = {percents}");
+                    View.UpdateStat(attributeKvp.Key, value, percents);
                 }
             }
         }
         
         private void UpdateStat(IUnit unit)
         {
-            foreach (var attribute in unit.Attributes)
+            foreach (var attributeKvp in unit.Attributes)
             {
-                View.UpdateStat(attribute.Key, attribute.Value.Value);
+                var attribute = attributeKvp.Value;
+                var percents = attribute.Value / attribute.MaxValue;
+                View.UpdateStat(attributeKvp.Key, attribute.Value, percents);
             }
-        }
-
-        public void Dispose()
-        {
-            
         }
     }
 }

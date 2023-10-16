@@ -21,7 +21,7 @@ namespace Game.Models.Attributes
         
         public float MaxValue { get; }
         public float MinValue { get; }
-        public event Action<float> Changed; 
+        public event Action<float, float> Changed; 
 
         public float Value
         {
@@ -32,7 +32,7 @@ namespace Game.Models.Attributes
                     _additionalValue = CalculateValue();
                     _isDirty = false;
                 }
-
+                
                 return _baseValue + _additionalValue;
             }
             set
@@ -51,7 +51,7 @@ namespace Game.Models.Attributes
                     _baseValue = Mathf.Clamp(_baseValue, MinValue, MaxValue);
                 }
                 
-                Changed?.Invoke(Value);
+                Changed?.Invoke(MaxValue, Value);
             }
         }
 
@@ -60,24 +60,51 @@ namespace Game.Models.Attributes
             _isDirty = true;
             _modifiers.Add(modifier);
             
-            Changed?.Invoke(Value);
+            Changed?.Invoke(MaxValue, Value);
         }
 
         public bool TryRemoveModifier(AttributeModifier modifier)
         {
+            var removed = _modifiers.Remove(modifier);
+            
             var value = _additionalValue;
 
-            value -= modifier.Value;
+            if (_additionalValue > 0 && removed)
+            {
+                switch (modifier.ModifierType)
+                {
+                    case EModifierType.Divide:
+                        value += _baseValue;
+                        value *= modifier.Value;
+                        value -= _baseValue;
+                        break;
+                    case EModifierType.Multiply:
+                        value += _baseValue;
+                        value /= modifier.Value;
+                        _additionalValue -= value;
+                        break;
+                    case EModifierType.Add:
+                        value -= modifier.Value;
+                        _additionalValue = value;
+                        break;
+                    case EModifierType.AddPercents:
+                        break;
+                    case EModifierType.Substract:
+                        value += modifier.Value;
+                        _additionalValue = value;
+                        break;
+                }
+            }
+            
+            _additionalValue = Mathf.Max(_additionalValue, 0);
+            Changed?.Invoke(MaxValue, Value);
 
-            _additionalValue = Mathf.Max(value, 0);
-                
-            return _modifiers.Remove(modifier);
+            return removed;
         }
-        
 
         private float CalculateValue()
         {
-            var value = _additionalValue;
+            float value = 0;
             
             foreach (var modifier in _modifiers)
             {
@@ -104,8 +131,16 @@ namespace Game.Models.Attributes
                         value -= modifier.Value;
                         break;
                 }
-            }
+                
+                var totalValue = value + _baseValue;
 
+                if (totalValue > MaxValue)
+                {
+                    var excess = totalValue - MaxValue;
+                    value -= excess;
+                }
+            }
+            
             return value;
         }
     }

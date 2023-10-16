@@ -1,33 +1,34 @@
-﻿using System.Globalization;
-using Game.Models.Attributes;
+﻿using Game.Models.Attributes;
 using SimpleUi.Abstracts;
-using TMPro;
 using UnityEngine;
 
 namespace UI.Views.Stats
 {
     public class UnitStatsView : UiView
     {
-        [SerializeField] private TextMeshProUGUI healthText;
-        [SerializeField] private TextMeshProUGUI armorText;
-        [SerializeField] private TextMeshProUGUI attackDamageText;
-        [SerializeField] private TextMeshProUGUI vampirismDamageText;
+        [SerializeField] private StatSliderView healthSlider;
+        [SerializeField] private StatSliderView armorSlider;
+        [SerializeField] private StatSliderView attackDamageSlider;
+        [SerializeField] private StatSliderView vampirismSlider;
 
-        public void UpdateStat(EAttributeType attributeType, float value)
+        public void UpdateStat(EAttributeType attributeType, 
+            float value, 
+            float percents)
         {
-            var textField = GetTextField(attributeType);
-            
-            textField.text = value.ToString(CultureInfo.InvariantCulture);
+            var slider = GetSlider(attributeType);
+            var title = attributeType.ToString();
+            // Debug.Log($"set slider {attributeType}, value = {value}, percents = {percents}");
+            slider.Set(title, value, percents);
         }
 
-        private TextMeshProUGUI GetTextField(EAttributeType attributeType)
+        private StatSliderView GetSlider(EAttributeType attributeType)
         {
             return attributeType switch
             {
-                EAttributeType.Health => healthText,
-                EAttributeType.Armor => armorText,
-                EAttributeType.Vampirism => vampirismDamageText,
-                EAttributeType.AttackDamage => attackDamageText,
+                EAttributeType.Health => healthSlider,
+                EAttributeType.Armor => armorSlider,
+                EAttributeType.Vampirism => vampirismSlider,
+                EAttributeType.AttackDamage => attackDamageSlider,
             };
         }
     }
