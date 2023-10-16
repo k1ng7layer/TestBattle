@@ -1,5 +1,4 @@
 ﻿using System;
-using Game.Services.Round;
 using Game.StateMachine.StateMachine.Impl;
 using Game.StateMachine.States;
 using SimpleUi.Abstracts;
@@ -12,23 +11,12 @@ namespace UI.Controllers.Round
         IInitializable, 
         IDisposable
     {
-        private readonly IRoundProvider _roundProvider;
-        
         [Inject] private readonly BattleStateMachine _battleStateMachine;
 
         private int _roundNumValue;
         
-        public RoundCounterController(IRoundProvider roundProvider)
-        {
-            _roundProvider = roundProvider;
-        }
-
         public void Initialize()
         {
-            _roundProvider.RoundChanged += DisplayRound;
-            
-            DisplayRound(_roundProvider.CurrentRound);
-
             _battleStateMachine.StateChanged += OnBattleStateChanged;
         }
 

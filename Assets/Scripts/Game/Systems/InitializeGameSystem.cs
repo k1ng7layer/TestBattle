@@ -1,6 +1,4 @@
 ﻿using Core.Systems;
-using Game.Battle;
-using Game.Factories.BattleMembers.Impl;
 using Game.Factories.StateMachine.Unit;
 using Game.Factories.Unit;
 using Game.Services.GameField;
@@ -17,9 +15,7 @@ namespace Game.Systems
     public class InitializeGameSystem : IInitializeSystem
     {
         private readonly IGameFieldProvider _gameFieldProvider;
-        private readonly ICombatManager _combatManager;
         private readonly IUnitFactory _unitFactory;
-        private readonly IBattleMemberFactory _battleMemberFactory;
         private readonly IUnitStateMachineFactory _unitStateMachineFactory;
         private readonly IUnitStateMachineInitializer _unitStateMachineInitializer;
         private readonly IBattleStateMachineInitializer _battleStateMachineInitializer;
@@ -28,10 +24,8 @@ namespace Game.Systems
         private readonly SignalBus _signalBus;
 
         public InitializeGameSystem(
-            IGameFieldProvider gameFieldProvider, 
-            ICombatManager combatManager,
+            IGameFieldProvider gameFieldProvider,
             IUnitFactory unitFactory,
-            IBattleMemberFactory battleMemberFactory,
             IUnitStateMachineFactory unitStateMachineFactory,
             IUnitStateMachineInitializer unitStateMachineInitializer,
             IBattleStateMachineInitializer battleStateMachineInitializer,
@@ -41,13 +35,11 @@ namespace Game.Systems
         {
             _gameFieldProvider = gameFieldProvider;
             _unitFactory = unitFactory;
-            _battleMemberFactory = battleMemberFactory;
             _unitStateMachineFactory = unitStateMachineFactory;
             _unitStateMachineInitializer = unitStateMachineInitializer;
             _battleStateMachineInitializer = battleStateMachineInitializer;
             _battleStateMachine = battleStateMachine;
             _signalBus = signalBus;
-            _combatManager = combatManager;
         }
         
         public void Initialize()

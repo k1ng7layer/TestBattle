@@ -1,7 +1,6 @@
 ﻿using Game.Models.Buffs;
 using Game.Models.Combat;
 using Game.Presenters.Unit;
-using Game.Services.AttackQueueProvider;
 using Game.Settings.Battle;
 using Game.StateMachine.StateMachine.Impl;
 using Game.StateMachine.States;
@@ -15,7 +14,7 @@ namespace UI.Controllers.Combat
     public class ApplyBuffController : UnitLinkableController<ApplyBuffButtonView>
     {
         private readonly UnitStateMachine _unitStateMachine;
-        [Inject] private readonly IAttackQueueService _attackQueueService;
+        
         [Inject] private readonly IBattleSettingsBase _battleSettingsBase;
 
         public ApplyBuffController(
@@ -82,7 +81,7 @@ namespace UI.Controllers.Combat
 
         protected override void OnDispose()
         {
-            _attackQueueService.ActiveUnitChanged -= OnAttackUnitChanged;
+            _unitStateMachine.StateChanged -= OnStateChanged;
         }
     }
 }

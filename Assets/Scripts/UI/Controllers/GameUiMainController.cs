@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using Game.Battle;
 using Game.Factories.Ui;
 using Game.Models.Combat;
 using Game.Presenters.Unit;
@@ -23,11 +22,10 @@ namespace UI.Controllers
         public UnitStatsView UnitStatsView;
     }
     
-    public class GameUiMainController : UiController<GameUiMainView>, IInitializable, IDisposable
+    public class GameUiMainController : UiController<GameUiMainView>, IDisposable
     {
         [Inject] private readonly BattleStateMachine _battleStateMachine;
         
-        private readonly ICombatManager _combatManager;
         private readonly IActiveBuffsControllerFactory _activeBuffsControllerFactory;
         private readonly IApplyBuffControllerFactory _applyBuffControllerFactory;
         private readonly IPerformAttackButtonControllerFactory _performAttackButtonControllerFactory;
@@ -35,24 +33,16 @@ namespace UI.Controllers
         private readonly List<IInitializableUiController> _uiControllers = new();
         
 
-        public GameUiMainController(
-            ICombatManager combatManager, 
-            IActiveBuffsControllerFactory activeBuffsControllerFactory,
+        public GameUiMainController(IActiveBuffsControllerFactory activeBuffsControllerFactory,
             IApplyBuffControllerFactory applyBuffControllerFactory,
             IPerformAttackButtonControllerFactory performAttackButtonControllerFactory,
             IUnitStatsControllerFactory unitStatsControllerFactory
         )
         {
-            _combatManager = combatManager;
             _activeBuffsControllerFactory = activeBuffsControllerFactory;
             _applyBuffControllerFactory = applyBuffControllerFactory;
             _performAttackButtonControllerFactory = performAttackButtonControllerFactory;
             _unitStatsControllerFactory = unitStatsControllerFactory;
-        }
-        
-        public void Initialize()
-        {
-            _combatManager.BattleStarted += OnCombatStarted;
         }
 
         public override void OnShow()
