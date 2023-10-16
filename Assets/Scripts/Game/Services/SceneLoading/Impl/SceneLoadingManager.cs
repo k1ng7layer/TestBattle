@@ -26,17 +26,6 @@ namespace Game.Services.SceneLoading.Impl
             }
         }
         
-        private IEnumerator UnLoadScene(AsyncOperation loadingOperation)
-        {
-            //loadingOperation.allowSceneActivation = true;
-            
-            while (!loadingOperation.isDone)
-            {
-                yield return null;
-            }
-        }
-        
-
         private void RunContext(string name)
         {
             var contexts = Object.FindObjectsOfType<SceneContext>();
