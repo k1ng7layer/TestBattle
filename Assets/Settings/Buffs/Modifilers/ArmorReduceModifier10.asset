@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: ArmorReduceModifier10
   m_EditorClassIdentifier: 
   attributeType: 1
-  modifierType: 4
+  modifierType: 3
   value: 10

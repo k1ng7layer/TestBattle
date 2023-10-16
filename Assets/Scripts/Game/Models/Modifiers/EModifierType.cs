@@ -5,7 +5,6 @@
         Divide,
         Multiply,
         Add,
-        AddPercents,
         Substract,
     }
 }

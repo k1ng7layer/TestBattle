@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: VampirismDecreaseModifier25
   m_EditorClassIdentifier: 
   attributeType: 2
-  modifierType: 4
-  value: 50
+  modifierType: 3
+  value: 25

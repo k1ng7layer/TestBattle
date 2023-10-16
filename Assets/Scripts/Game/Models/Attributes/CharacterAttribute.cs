@@ -38,18 +38,10 @@ namespace Game.Models.Attributes
             set
             {
                 if (value < _additionalValue)
-                {
-                    var remainder = _additionalValue - value;
-                    
                     _additionalValue = 0;
-                    _baseValue -= remainder;
-                    _baseValue = Mathf.Max(_baseValue, 0);
-                }
-                else
-                {
-                    _baseValue = value;
-                    _baseValue = Mathf.Clamp(_baseValue, MinValue, MaxValue);
-                }
+                
+                _baseValue = value;
+                _baseValue = Mathf.Clamp(_baseValue, MinValue, MaxValue);
                 
                 Changed?.Invoke(MaxValue, Value);
             }
@@ -87,8 +79,6 @@ namespace Game.Models.Attributes
                         value -= modifier.Value;
                         _additionalValue = value;
                         break;
-                    case EModifierType.AddPercents:
-                        break;
                     case EModifierType.Substract:
                         value += modifier.Value;
                         _additionalValue = value;
@@ -122,11 +112,6 @@ namespace Game.Models.Attributes
                     case EModifierType.Add:
                         value += modifier.Value;
                         break;
-                    case EModifierType.AddPercents:
-                        value += _baseValue;
-                        value *= 1 + modifier.Value;
-                        value -= _baseValue;
-                        break;
                     case EModifierType.Substract:
                         value -= modifier.Value;
                         break;
@@ -137,6 +122,12 @@ namespace Game.Models.Attributes
                 if (totalValue > MaxValue)
                 {
                     var excess = totalValue - MaxValue;
+                    value -= excess;
+                }
+
+                if (totalValue < MinValue)
+                {
+                    var excess = totalValue - MinValue;
                     value -= excess;
                 }
             }
