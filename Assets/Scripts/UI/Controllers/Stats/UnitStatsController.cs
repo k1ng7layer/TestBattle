@@ -1,7 +1,6 @@
 ﻿using Game.Presenters.Unit;
 using UI.Controllers.Abstractions;
 using UI.Views.Stats;
-using UnityEngine;
 
 namespace UI.Controllers.Stats
 {
@@ -32,7 +31,7 @@ namespace UI.Controllers.Stats
                 void Update(float maxValue, float value)
                 {
                     var percents = value / maxValue;
-                    Debug.Log($"set slider {attributeKvp.Key}, value = {value}, percents = {percents}");
+                 
                     View.UpdateStat(attributeKvp.Key, value, percents);
                 }
             }
